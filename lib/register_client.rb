@@ -2,9 +2,12 @@ require 'rest-client'
 require 'json'
 require 'date'
 require 'mini_cache'
+require 'paginated'
 
 module RegistersClient
   class RegisterClient
+    extend Paginated
+
     def initialize(register, phase, config_options)
       @store = MiniCache::Store.new
       @register = register
@@ -17,37 +20,44 @@ module RegistersClient
     def get_entries
       get_data[:entries][:user]
     end
+    filter_and_paginate :get_entries
 
     def get_records
       get_data[:records][:user].map { |_k, v| v.last }
     end
-
-    def get_metadata_records
-      get_data[:records][:system].map { |_k, v| v.last }
-    end
-
-    def get_field_definitions
-      get_metadata_records.select { |record| record[:key].start_with?('field:') }
-    end
-
-    def get_register_definition
-      get_metadata_records.select { |record| record[:key].start_with?('register:') }.first
-    end
-
-    def get_custodian
-      get_metadata_records.select { |record| record[:key] == 'custodian'}.first
-    end
+    filter_and_paginate :get_records
 
     def get_records_with_history
       get_data[:records][:user]
     end
+    filter_and_paginate :get_records_with_history
 
     def get_current_records
-      get_records.select { |record| record[:item]['end-date'].nil? }
+      get_records_no_pagination.select { |record| record[:item]['end-date'].nil? }
     end
+    filter_and_paginate :get_current_records
 
     def get_expired_records
-      get_records.select { |record| record[:item]['end-date'].present? }
+      get_records_no_pagination.select { |record| record[:item]['end-date'].present? }
+    end
+    filter_and_paginate :get_expired_records
+
+    def get_metadata_records
+      get_data[:records][:system].map { |_k, v| v.last }
+    end
+    filter_and_paginate :get_metadata_records
+
+    def get_field_definitions
+      get_metadata_records_no_pagination.select { |record| record[:key].start_with?('field:') }
+    end
+    filter_and_paginate :get_field_definitions
+
+    def get_register_definition
+      get_metadata_records_no_pagination.select { |record| record[:key].start_with?('register:') }.first
+    end
+
+    def get_custodian
+      get_metadata_records_no_pagination.select { |record| record[:key] == 'custodian'}.first
     end
 
     def refresh_data
@@ -122,4 +132,6 @@ module RegistersClient
       { key: key, entry_number: entry_number, timestamp: entry_timestamp, hash: hash, item: current_item }
     end
   end
+
+
 end
