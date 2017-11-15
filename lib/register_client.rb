@@ -13,6 +13,7 @@ module RegistersClient
       @register = register
       @phase = phase
       @config_options = config_options
+      @data = {}
 
       get_data
     end
@@ -23,7 +24,11 @@ module RegistersClient
     filter_and_paginate :get_entries
 
     def get_records
-      get_data[:records][:user].map { |_k, v| v.last }
+      if !@data[:records].present?
+       @data[:records] = get_data[:records][:user].map { |_k, v| v.last }
+      end
+
+      @data[:records]
     end
     filter_and_paginate :get_records
 
@@ -33,7 +38,11 @@ module RegistersClient
     filter_and_paginate :get_records_with_history
 
     def get_current_records
-      get_records_no_pagination.select { |record| record[:item]['end-date'].nil? }
+      if !@data[:current_records].present?
+        @data[:current_records] = get_records_no_pagination.select { |record| record[:item]['end-date'].nil? }
+      end
+
+      @data[:current_records]
     end
     filter_and_paginate :get_current_records
 
@@ -62,6 +71,8 @@ module RegistersClient
 
     def refresh_data
       @store.set('data') do
+        @data = {}
+
         rsf = download_rsf(@register, @phase)
         data = parse_rsf(rsf)
         MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
@@ -72,6 +83,8 @@ module RegistersClient
 
     def get_data
       @store.get_or_set('data') do
+        @data = {}
+
         rsf = download_rsf(@register, @phase)
         data = parse_rsf(rsf)
         MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
