@@ -1,7 +1,7 @@
 require 'register_client'
 
 module RegistersClient
-    VERSION = '0.1.0' unless defined? OpenRegister::VERSION
+    VERSION = '0.1.1' unless defined? OpenRegister::VERSION
     class RegistersClientManager
       def initialize(config_options = {})
         @config_options = defaults.merge(config_options)
