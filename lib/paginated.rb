@@ -2,24 +2,24 @@ module Paginated
   def filter_and_paginate(sym)
     original_method = :"#{sym}_no_pagination"
     alias_method original_method, sym
-    define_method sym do |page, text, *args|
+    define_method sym do |page = 1, text = '', *args|
       results = send(original_method, *args)
       filtered = self.class.filter(results, text)
-      self.class.paginate(filtered, page, @config_options)
+      self.class.paginate(filtered, page, @config_options[:page_size])
     end
   end
 
   def filter(results, text)
     if text.empty?
       results
-    elsif
+    else
       text = text.downcase
       results.select { |record| record[:item].values.to_s.downcase.include?(text) }
     end
   end
 
-  def paginate(results, page, config_options)
-    if results.length <= config_options[:page_size]
+  def paginate(results, page = 1, page_size = 100)
+    if page.nil? || results.length <= page_size
       {
         data: results,
         page: 1,
@@ -28,12 +28,12 @@ module Paginated
         more_results: false
       }
     elsif
-      start_index = (page - 1) * config_options[:page_size]
+      start_index = (page - 1) * page_size
       total_results = results.length
-      total_pages = (results.length / config_options[:page_size].to_f).ceil
+      total_pages = (results.length / page_size.to_f).ceil
 
       {
-        data: results.slice(start_index, config_options[:page_size]),
+        data: results.slice(start_index, page_size),
         page: page,
         total_results: total_results,
         total_pages: total_pages,
