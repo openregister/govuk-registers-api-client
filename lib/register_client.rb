@@ -2,14 +2,18 @@ require 'rest-client'
 require 'json'
 require 'date'
 require 'mini_cache'
+require 'paginated'
 
 module RegistersClient
   class RegisterClient
+    extend Paginated
+
     def initialize(register, phase, config_options)
       @store = MiniCache::Store.new
       @register = register
       @phase = phase
       @config_options = config_options
+      @data = {}
 
       get_data
     end
@@ -17,41 +21,58 @@ module RegistersClient
     def get_entries
       get_data[:entries][:user]
     end
+    filter_and_paginate :get_entries
 
     def get_records
-      get_data[:records][:user].map { |_k, v| v.last }
-    end
+      if !@data[:records].present?
+       @data[:records] = get_data[:records][:user].map { |_k, v| v.last }
+      end
 
-    def get_metadata_records
-      get_data[:records][:system].map { |_k, v| v.last }
+      @data[:records]
     end
-
-    def get_field_definitions
-      get_metadata_records.select { |record| record[:key].start_with?('field:') }
-    end
-
-    def get_register_definition
-      get_metadata_records.select { |record| record[:key].start_with?('register:') }.first
-    end
-
-    def get_custodian
-      get_metadata_records.select { |record| record[:key] == 'custodian'}.first
-    end
+    filter_and_paginate :get_records
 
     def get_records_with_history
       get_data[:records][:user]
     end
+    filter_and_paginate :get_records_with_history
 
     def get_current_records
-      get_records.select { |record| record[:item]['end-date'].nil? }
+      if !@data[:current_records].present?
+        @data[:current_records] = get_records_no_pagination.select { |record| record[:item]['end-date'].nil? }
+      end
+
+      @data[:current_records]
     end
+    filter_and_paginate :get_current_records
 
     def get_expired_records
-      get_records.select { |record| record[:item]['end-date'].present? }
+      get_records_no_pagination.select { |record| record[:item]['end-date'].present? }
+    end
+    filter_and_paginate :get_expired_records
+
+    def get_metadata_records
+      get_data[:records][:system].map { |_k, v| v.last }
+    end
+    filter_and_paginate :get_metadata_records
+
+    def get_field_definitions
+      get_metadata_records_no_pagination.select { |record| record[:key].start_with?('field:') }
+    end
+    filter_and_paginate :get_field_definitions
+
+    def get_register_definition
+      get_metadata_records_no_pagination.select { |record| record[:key].start_with?('register:') }.first
+    end
+
+    def get_custodian
+      get_metadata_records_no_pagination.select { |record| record[:key] == 'custodian'}.first
     end
 
     def refresh_data
       @store.set('data') do
+        @data = {}
+
         rsf = download_rsf(@register, @phase)
         data = parse_rsf(rsf)
         MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
@@ -62,6 +83,8 @@ module RegistersClient
 
     def get_data
       @store.get_or_set('data') do
+        @data = {}
+
         rsf = download_rsf(@register, @phase)
         data = parse_rsf(rsf)
         MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
@@ -122,4 +145,6 @@ module RegistersClient
       { key: key, entry_number: entry_number, timestamp: entry_timestamp, hash: hash, item: current_item }
     end
   end
+
+
 end
