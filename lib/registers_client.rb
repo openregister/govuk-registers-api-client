@@ -1,7 +1,7 @@
 require 'register_client'
 
 module RegistersClient
-    VERSION = '0.1.1' unless defined? OpenRegister::VERSION
+    VERSION = '0.2.0'
     class RegistersClientManager
       def initialize(config_options = {})
         @config_options = defaults.merge(config_options)
@@ -22,7 +22,8 @@ module RegistersClient
   
       def defaults
         {
-            cache_duration: 30
+            cache_duration: 30,
+            page_size: 100
         }
       end
     end
