@@ -73,9 +73,10 @@ module RegistersClient
     end
 
     def parse_rsf(rsf)
-      items = []
+      items = {}
       entries = { user: [], system: [] }
       records = { user: {}, system: {} }
+      entry_number = 1
 
       rsf.each_line do |line|
         line.slice!("\n")
@@ -84,13 +85,13 @@ module RegistersClient
         command = params[0]
 
         if command == 'add-item'
-          items << parse_item(params[1])
+          item = parse_item(params[1])
+          items[item[:hash].to_s] = item
         elsif command == 'append-entry'
           key = params[2]
-          entry_number = entries[:user].count + 1
           entry_timestamp = params[3]
           current_item_hash = params[4]
-          record = parse_entry(key, entry_number, entry_timestamp, current_item_hash, JSON.parse(items.find { |item| item[:hash] == current_item_hash }[:item]))
+          record = parse_entry(key, entry_number, entry_timestamp, current_item_hash, JSON.parse(items[current_item_hash][:item]))
 
           if params[1] == 'user'
             if !records[:user].key?(key)
@@ -108,6 +109,8 @@ module RegistersClient
             entries[:system] << record
           end
         end
+
+        entry_number += 1
       end
 
       { records: records, entries: entries, items: items }
