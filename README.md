@@ -14,4 +14,7 @@ register_data.get_records[0][:item]
  => {"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"} 
  ```
 
+## License
 
+Unless stated otherwise, this codebase is released under [the MIT
+license](./LICENSE).
