@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'rubygems/package_task'
 require 'rdoc/task'
-require './lib/registers_client'
 
 require 'rspec'
 require 'rspec/core/rake_task'
@@ -12,9 +11,8 @@ end
 task default: ['spec']
 
 spec = Gem::Specification.new do |s|
-
   s.name              = 'registers-ruby-client'
-  s.version           = RegistersClient::VERSION
+  s.version           = File.read('.version').chomp
   s.summary           = 'A Ruby Client Library for Open Registers'
   s.author            = 'Registers Team'
   s.email             = 'registersteam ~@nospam@~ digital.cabinet-office.gov.uk'
@@ -25,7 +23,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files  = %w(README.md)
   s.rdoc_options      = %w(--main README.md)
 
-  s.files             = %w(Gemfile LICENSE README.md) + Dir.glob('{lib}/**/*')
+  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/registers_client.rb".freeze]
   s.require_paths     = ['lib']
 
   s.add_runtime_dependency 'rest-client', '~> 1'
