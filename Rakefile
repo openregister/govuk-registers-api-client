@@ -15,7 +15,7 @@ spec = Gem::Specification.new do |s|
   s.version           = File.read('.version').chomp
   s.summary           = 'A Ruby Client Library for Open Registers'
   s.author            = 'Registers Team'
-  s.email             = 'registersteam ~@nospam@~ digital.cabinet-office.gov.uk'
+  s.email             = 'registers ~@nospam@~ digital.cabinet-office.gov.uk'
   s.homepage          = 'https://github.com/openregister/registers-ruby-client'
   s.licenses          = ['MIT']
 

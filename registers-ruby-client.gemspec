@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib".freeze]
   s.authors = ["Registers Team".freeze]
   s.date = "2017-11-06"
-  s.email = "registersteam ~@nospam@~ digital.cabinet-office.gov.uk".freeze
+  s.email = "registers ~@nospam@~ digital.cabinet-office.gov.uk".freeze
   s.extra_rdoc_files = ["README.md".freeze]
   s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/registers_client.rb".freeze]
   s.homepage = "https://github.com/openregister/registers-ruby-client".freeze
