@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# stub: registers-ruby-client 0.2.0 ruby lib
+# stub: registers-ruby-client 0.3.0 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "registers-ruby-client".freeze
-  s.version = ruby File.read('.version').chomp
+  s.version = File.read('.version').chomp
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
