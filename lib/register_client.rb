@@ -56,7 +56,7 @@ module RegistersClient
     end
 
     def get_expired_records
-      @expired_records ||= RecordCollection.new(get_records.select { |record| record[:item]['end-date'].present? }, @config_options.fetch(:page_size))
+      @expired_records ||= RecordCollection.new(get_records.reject { |record| record[:item]['end-date'].nil? }, @config_options.fetch(:page_size))
       @expired_records
     end
 
