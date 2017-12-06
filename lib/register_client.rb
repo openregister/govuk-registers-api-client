@@ -5,6 +5,9 @@ require 'mini_cache'
 require 'record_collection'
 require 'record_map_collection'
 require 'entry_collection'
+require 'entry'
+require 'item'
+require 'record'
 
 module RegistersClient
   class RegisterClient
@@ -18,48 +21,80 @@ module RegistersClient
     end
 
     def get_entries
-      @entries ||= EntryCollection.new(get_data[:entries][:user], @config_options.fetch(:page_size))
-      @entries
+      EntryCollection.new(get_data[:entries][:user], @config_options.fetch(:page_size))
     end
 
     def get_records
-      @records ||= RecordCollection.new(get_data[:records][:user].map { |_k, v| v.last }, @config_options.fetch(:page_size))
-      @records
+      RecordCollection.new(get_data[:records][:user].map do |_k, record_entry_numbers|
+        entry = get_data[:entries][:user][record_entry_numbers.last - 1]
+        item = get_data[:items][entry.item_hash]
+
+        Record.new(entry, item)
+      end, @config_options.fetch(:page_size))
     end
 
     def get_metadata_records
-      @metadata_records ||= RecordCollection.new(get_data[:records][:system].map { |_k, v| v.last }, @config_options.fetch(:page_size))
-      @metadata_records
+      RecordCollection.new(get_data[:records][:system].map do |_k, record_entry_numbers|
+        entry = get_data[:entries][:system][record_entry_numbers.last - 1]
+        item = get_data[:items][entry.item_hash]
+
+        Record.new(entry, item)
+      end, @config_options.fetch(:page_size))
     end
 
     def get_field_definitions
-      ordered_fields = get_register_definition[:item]['fields']
-      ordered_records = ordered_fields.map { |f| get_metadata_records.find { |record| record[:key] == "field:#{f}" } }
+      ordered_fields = get_register_definition.item.value['fields']
+      ordered_records = ordered_fields.map { |f| get_metadata_records.find { |record| record.entry.key == "field:#{f}" } }
       @field_definitions ||= RecordCollection.new(ordered_records, @config_options.fetch(:page_size))
       @field_definitions
     end
 
     def get_register_definition
-      get_metadata_records.select { |record| record[:key].start_with?('register:') }.first
+      get_metadata_records.select { |record| record.entry.key.start_with?('register:') }.first
     end
 
     def get_custodian
-      get_metadata_records.select { |record| record[:key] == 'custodian'}.first
+      get_metadata_records.select { |record| record.entry.key == 'custodian'}.first
     end
 
     def get_records_with_history
-      @records_with_history ||= RecordMapCollection.new(get_data[:records][:user], @config_options.fetch(:page_size))
-      @records_with_history
+      records_with_history = {}
+
+      get_data[:records][:user].map do |_k, record_entry_numbers|
+        records_with_history[_k] = []
+
+        record_entry_numbers.each do |entry_number|
+          entry = get_data[:entries][:user][entry_number - 1]
+          item = get_data[:items][entry.item_hash]
+          records_with_history[_k] << Record.new(entry, item)
+        end
+      end
+
+      RecordMapCollection.new(records_with_history, @config_options.fetch(:page_size))
+    end
+
+    def get_metadata_records_with_history
+      metadata_records_with_history = {}
+
+      get_data[:records][:system].map do |_k, record_entry_numbers|
+        metadata_records_with_history[_k] = []
+
+        record_entry_numbers.each do |entry_number|
+          entry = get_data[:entries][:system][entry_number - 1]
+          item = get_data[:items][entry.item_hash]
+          metadata_records_with_history[_k] << Record.new(entry, item)
+        end
+      end
+
+      RecordMapCollection.new(metadata_records_with_history, @config_options.fetch(:page_size))
     end
 
     def get_current_records
-      @current_records ||= RecordCollection.new(get_records.select { |record| record[:item]['end-date'].nil? }, @config_options.fetch(:page_size))
-      @current_records
+      RecordCollection.new(get_records.select { |record| !record.item.has_end_date }, @config_options.fetch(:page_size))
     end
 
     def get_expired_records
-      @expired_records ||= RecordCollection.new(get_records.reject { |record| record[:item]['end-date'].nil? }, @config_options.fetch(:page_size))
-      @expired_records
+      RecordCollection.new(get_records.select { |record| record.item.has_end_date }, @config_options.fetch(:page_size))
     end
 
     def refresh_data
@@ -88,53 +123,45 @@ module RegistersClient
       items = {}
       entries = { user: [], system: [] }
       records = { user: {}, system: {} }
-      entry_number = 1
+      user_entry_number = 1
+      system_entry_number = 1
 
       rsf.each_line do |line|
         line.slice!("\n")
         params = line.split("\t")
-
         command = params[0]
 
         if command == 'add-item'
-          item = parse_item(params[1])
-          items[item[:hash].to_s] = item
+          item = RegistersClient::Item.new(line)
+          items[item.hash.to_s] = item
         elsif command == 'append-entry'
-          key = params[2]
-          entry_timestamp = params[3]
-          current_item_hash = params[4]
-          record = parse_entry(key, entry_number, entry_timestamp, current_item_hash, JSON.parse(items[current_item_hash][:item]))
-
           if params[1] == 'user'
-            if !records[:user].key?(key)
-              records[:user][key] = []
+            entry = Entry.new(line, user_entry_number)
+            entries[:user] << entry
+
+            if !records[:user].key?(entry.key)
+              records[:user][entry.key] = []
             end
 
-            records[:user][key] << record
-            entries[:user] << record
+            records[:user][entry.key] << user_entry_number
+
+            user_entry_number += 1
           else
-            if !records[:system].key?(key)
-              records[:system][key] = []
+            entry = Entry.new(line, system_entry_number)
+            entries[:system] << entry
+
+            if !records[:system].key?(entry.key)
+              records[:system][entry.key] = []
             end
 
-            records[:system][key] << record
-            entries[:system] << record
+            records[:system][entry.key] << system_entry_number
+
+            system_entry_number += 1
           end
         end
-
-        entry_number += 1
       end
 
       { records: records, entries: entries, items: items }
-    end
-
-    def parse_item(item_json)
-      payload_sha = Digest::SHA256.hexdigest item_json
-      { hash: 'sha-256:' + payload_sha, item: item_json }
-    end
-
-    def parse_entry(key, entry_number, entry_timestamp, hash, current_item)
-      { key: key, entry_number: entry_number, timestamp: entry_timestamp, hash: hash, item: current_item }
     end
   end
 end

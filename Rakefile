@@ -23,7 +23,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files  = %w(README.md)
   s.rdoc_options      = %w(--main README.md)
 
-  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/registers_client.rb".freeze]
+  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/register_client_manager.rb".freeze]
   s.require_paths     = ['lib']
 
   s.add_runtime_dependency 'rest-client', '~> 1'
