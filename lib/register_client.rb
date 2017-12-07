@@ -33,7 +33,9 @@ module RegistersClient
     end
 
     def get_field_definitions
-      @field_definitions ||= RecordCollection.new(get_metadata_records.select { |record| record[:key].start_with?('field:') }, @config_options.fetch(:page_size))
+      ordered_fields = get_register_definition[:item]['fields']
+      ordered_records = ordered_fields.map { |f| get_metadata_records.find { |record| record[:key] == "field:#{f}" } }
+      @field_definitions ||= RecordCollection.new(ordered_records, @config_options.fetch(:page_size))
       @field_definitions
     end
 
