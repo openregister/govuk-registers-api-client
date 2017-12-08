@@ -17,7 +17,7 @@ _Note: `cache_duration`  is the amount of time a register is cached in-memory, b
 
 ## Accessing methods 
 
-_Note: All examples use the `country` register_
+_Note: All examples use the `country` register._
 
 ### `get_entries`
 
@@ -166,6 +166,7 @@ register_data.get_register_definition.to_json
 <summary>
 Expected output (click here to expand):
 </summary>
+ 
 ```
 
 {"key":"register:country","entry_number":229,"timestamp":"2016-08-04T14:45:41Z","hash":"sha-256:610bde42d3ae2ed3dd829263fe461542742a10ca33865d96d31ae043b242c300","item":{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}}
@@ -256,6 +257,7 @@ register_data.get_current_records.first[:item]
 <summary>
 Expected output (click here to expand):
 </summary>
+ 
 ```
 
 {"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
