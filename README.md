@@ -29,7 +29,9 @@ Click here to expand for more information.
  
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_entries.first[:item]
 
@@ -37,7 +39,9 @@ register_data.get_entries.first[:item]
 
 Expected output:
 
-```{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+```
+
+{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
 
 ```
 </details>
@@ -53,7 +57,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_records.first[:item]
 
@@ -61,7 +67,9 @@ register_data.get_records.first[:item]
 
 Expected output:
 
-```{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+```
+
+{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
 
 ```
 
@@ -78,7 +86,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_metadata_records.first[:item]
 
@@ -86,7 +96,9 @@ register_data.get_metadata_records.first[:item]
 
 Expected output:
 
-```{"name"=>"country"}
+```
+
+{"name"=>"country"}
 
 ```
 </details>
@@ -102,7 +114,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_field_definitions.first[:item]
 
@@ -110,7 +124,9 @@ register_data.get_field_definitions.first[:item]
 
 Expected output:
 
-```{"cardinality"=>"1", "datatype"=>"string", "field"=>"country", "phase"=>"beta", "register"=>"country", "text"=>"The country's 2-letter ISO 3166-2 alpha2 code."}
+```
+
+{"cardinality"=>"1", "datatype"=>"string", "field"=>"country", "phase"=>"beta", "register"=>"country", "text"=>"The country's 2-letter ISO 3166-2 alpha2 code."}
 
 ```
 
@@ -127,7 +143,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_register_definition.to_json
 
@@ -135,7 +153,9 @@ register_data.get_register_definition.to_json
 
 Expected output:
 
-```{"key":"register:country","entry_number":229,"timestamp":"2016-08-04T14:45:41Z","hash":"sha-256:610bde42d3ae2ed3dd829263fe461542742a10ca33865d96d31ae043b242c300","item":{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}}
+```
+
+{"key":"register:country","entry_number":229,"timestamp":"2016-08-04T14:45:41Z","hash":"sha-256:610bde42d3ae2ed3dd829263fe461542742a10ca33865d96d31ae043b242c300","item":{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}}
 
 ```
 
@@ -152,7 +172,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_custodian[:item]['custodian']
 
@@ -160,7 +182,9 @@ register_data.get_custodian[:item]['custodian']
 
 Expected output:
 
-```David de Silva
+```
+
+David de Silva
 
 ```
 
@@ -177,7 +201,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 germany = register_data.get_records_with_history.find { |r|  r[:key] == 'DE'  }
 puts germany.to_json
@@ -186,7 +212,9 @@ puts germany.to_json
 
 Expected output:
 
-```{"key":"DE","records":[{"key":"DE","entry_number":234,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","item":{"citizen-names":"West German","country":"DE","end-date":"1990-10-02","name":"West Germany","official-name":"Federal Republic of Germany"}},{"key":"DE","entry_number":303,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:747dbb718cb9f9799852e7bf698c499e6b83fb1a46ec06dbd6087f35c1e955cc","item":{"citizen-names":"German","country":"DE","name":"Germany","official-name":"The Federal Republic of Germany","start-date":"1990-10-03"}}]}
+```
+
+{"key":"DE","records":[{"key":"DE","entry_number":234,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","item":{"citizen-names":"West German","country":"DE","end-date":"1990-10-02","name":"West Germany","official-name":"Federal Republic of Germany"}},{"key":"DE","entry_number":303,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:747dbb718cb9f9799852e7bf698c499e6b83fb1a46ec06dbd6087f35c1e955cc","item":{"citizen-names":"German","country":"DE","name":"Germany","official-name":"The Federal Republic of Germany","start-date":"1990-10-03"}}]}
 
 ```
 
@@ -203,7 +231,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_current_records.first[:item]
 
@@ -211,7 +241,9 @@ register_data.get_current_records.first[:item]
 
 Expected output:
 
-```{"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
+```
+
+{"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
 
 ```
 
@@ -228,7 +260,9 @@ Click here to expand for more information.
 
 Example usage:
 
-```register_data = registers_client.get_register 'country', 'beta'
+```
+
+register_data = registers_client.get_register 'country', 'beta'
 
 register_data.get_expired_records.first[:item]
 
@@ -236,7 +270,9 @@ register_data.get_expired_records.first[:item]
 
 Expected output:
 
-```{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+```
+
+{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
 
 ```
 
