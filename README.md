@@ -192,12 +192,14 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_custodian[:item]['custodian']
 
 ```
+
 </details>
 <details>
 
 <summary>
 Expected output (click here to expand):
 </summary>
+
 ```
 
 David de Silva
@@ -224,6 +226,9 @@ puts germany.to_json
 
 ```
 
+</details>
+
+<details>
 <summary>
 Expected output (click here to expand):
 </summary>
@@ -282,10 +287,12 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_expired_records.first[:item]
 
 ```
-
+</details>
+<details>
 <summary>
 Expected output (click here to expand)
 </summary>
+ 
 ```
 
 {"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
