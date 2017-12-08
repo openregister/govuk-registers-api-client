@@ -15,6 +15,8 @@ registers_client = RegistersClient::RegistersClientManager.new({ cache_duration:
 
 _Note: `cache_duration`  is the amount of time a register is cached in-memory, before being re-downloaded._
 
+## Accessing methods 
+
 ### `get_entries`
 
 Get all entries from the register. For example, all updates there have ever been to the `country` register.
@@ -23,6 +25,7 @@ Get all entries from the register. For example, all updates there have ever been
 <summary>
 Click here to expand for more information.
 </summary>
+
  
 Example usage:
 
