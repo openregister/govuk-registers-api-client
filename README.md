@@ -17,17 +17,16 @@ _Note: `cache_duration`  is the amount of time a register is cached in-memory, b
 
 ## Accessing methods 
 
+_Note: All examples use the `country` register_
+
 ### `get_entries`
 
-Get all entries from the register. For example, all updates there have ever been to the `country` register.
+Get all entries from the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
-
- 
-Example usage:
 
 ```
 
@@ -36,8 +35,11 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_entries.first[:item]
 
 ```
-
-Expected output:
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
 
 ```
 
@@ -48,14 +50,13 @@ Expected output:
 
 ### `get_records`
 
-Get all records from the register. For example, all of the countries from the `country` register.
+Get all records from the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
 
-Example usage:
 
 ```
 
@@ -64,8 +65,12 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_records.first[:item]
 
 ```
-
-Expected output:
+</details>
+<details>
+ 
+<summary>
+Expected output (click here to expand):
+</summary>
 
 ```
 
@@ -81,10 +86,9 @@ Get all metadata records of the register. This includes the register definition,
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
 
-Example usage:
 
 ```
 
@@ -93,8 +97,12 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_metadata_records.first[:item]
 
 ```
-
-Expected output:
+</details>
+<details>
+ 
+<summary>
+Expected output (click here to expand):
+</summary>
 
 ```
 
@@ -105,14 +113,13 @@ Expected output:
 
 ### `get_field_definitions`
 
-Get definitions for the fields used in the register. For example, the `country` field in the `country` register.
+Get definitions for the fields used in the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
 
-Example usage:
 
 ```
 
@@ -122,7 +129,12 @@ register_data.get_field_definitions.first[:item]
 
 ```
 
-Expected output:
+</details>
+<details>
+ 
+<summary>
+Expected output (click here to expand):
+</summary>
 
 ```
 
@@ -134,14 +146,13 @@ Expected output:
 
 ### `get_register_definition`
 
-Get the definition of the register. For example, the 
+Get the definition of the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
-</summary>
+Example usage (click here to expand):
+ </summary>
 
-Example usage:
 
 ```
 
@@ -150,9 +161,11 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_register_definition.to_json
 
 ```
-
-Expected output:
-
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+</summary>
 ```
 
 {"key":"register:country","entry_number":229,"timestamp":"2016-08-04T14:45:41Z","hash":"sha-256:610bde42d3ae2ed3dd829263fe461542742a10ca33865d96d31ae043b242c300","item":{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}}
@@ -163,14 +176,13 @@ Expected output:
 
 ### `get_custodian`
 
-Get the name of the current custodian for the register. For example, the name of the custodian for the `country` register.
+Get the name of the current custodian for the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
 
-Example usage:
 
 ```
 
@@ -179,9 +191,12 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_custodian[:item]['custodian']
 
 ```
+</details>
+<details>
 
-Expected output:
-
+<summary>
+Expected output (click here to expand):
+</summary>
 ```
 
 David de Silva
@@ -192,14 +207,12 @@ David de Silva
 
 ### `get_records_with_history`
 
-Get current and previous versions of records in the register. For example, all of the versions of countries in the `country` register. 
+Get current and previous versions of records in the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
-
-Example usage:
 
 ```
 
@@ -210,7 +223,9 @@ puts germany.to_json
 
 ```
 
-Expected output:
+<summary>
+Expected output (click here to expand):
+</summary>
 
 ```
 
@@ -222,14 +237,12 @@ Expected output:
 
 ### `get_current_records`
 
-Get all current records from the register. For example, all of the current countries from the `country` register. 
+Get all current records from the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand):
 </summary>
-
-Example usage:
 
 ```
 
@@ -238,9 +251,11 @@ register_data = registers_client.get_register 'country', 'beta'
 register_data.get_current_records.first[:item]
 
 ```
-
-Expected output:
-
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+</summary>
 ```
 
 {"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
@@ -251,14 +266,12 @@ Expected output:
 
 ### `get_expired_records`
 
-Get all expired records from the register. For example, all of the former countries from the `country` register.
+Get all expired records from the register. 
 
 <details>
 <summary>
-Click here to expand for more information.
+Example usage (click here to expand)
 </summary>
-
-Example usage:
 
 ```
 
@@ -268,8 +281,9 @@ register_data.get_expired_records.first[:item]
 
 ```
 
-Expected output:
-
+<summary>
+Expected output (click here to expand)
+</summary>
 ```
 
 {"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
