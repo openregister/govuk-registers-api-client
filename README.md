@@ -103,7 +103,7 @@ Expected output:
 ```
 </details>
 
-#### `get_field_definitions`
+### `get_field_definitions`
 
 Get definitions for the fields used in the register. For example, the `country` field in the `country` register.
 
