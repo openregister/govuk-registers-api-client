@@ -1,0 +1,93 @@
+assert-root-hash	sha-256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+add-item	{"cardinality":"1","datatype":"string","field":"longitude","phase":"alpha","text":"Longitude of a place."}
+add-item	{"cardinality":"1","datatype":"string","field":"address","phase":"alpha","register":"address","text":"A place in the UK with a postal address."}
+add-item	{"cardinality":"1","datatype":"string","field":"official-name","phase":"beta","text":"Official name of country"}
+add-item	{"cardinality":"1","datatype":"string","field":"citizen-names","phase":"beta","text":"Name for the citzens of a country."}
+add-item	{"cardinality":"1","datatype":"string","field":"country","phase":"beta","text":"The country's 2-letter ISO 3166-2 alpha2 code."}
+add-item	{"cardinality":"1","datatype":"string","field":"name-gd","phase":"discovery","text":"Gaelic name for an entry"}
+add-item	{"cardinality":"1","datatype":"string","field":"address","phase":"discovery","text":"A place in the UK with a postal address."}
+add-item	{"cardinality":"1","datatype":"string","field":"cardinality","phase":"beta","text":"Number of elements of the set (1 or n)."}
+add-item	{"cardinality":"1","datatype":"string","field":"parent-address","phase":"discovery","register":"address","text":"An address containing an address"}
+add-item	{"cardinality":"1","datatype":"string","field":"datatype","phase":"alpha","register":"datatype","text":"The data type for constraining a field value."}
+add-item	{"cardinality":"1","datatype":"string","field":"street","phase":"alpha","text":"The number and street name of an address."}
+add-item	{"cardinality":"1","datatype":"string","field":"town","phase":"alpha","text":"The town of an address."}
+add-item	{"cardinality":"1","datatype":"point","field":"point","phase":"discovery","text":"A geographical location"}
+add-item	{"cardinality":"1","datatype":"string","field":"area","phase":"alpha","text":"The administrative area of an address."}
+add-item	{"cardinality":"1","datatype":"string","field":"name","phase":"beta","text":"Name of field"}
+add-item	{"cardinality":"1","datatype":"string","field":"property","phase":"alpha","text":"A building, institution or house name in an address."}
+add-item	{"cardinality":"1","datatype":"text","field":"copyright","phase":"beta","text":"Copyright for the data in the register."}
+add-item	{"cardinality":"1","datatype":"string","field":"street-custodian","phase":"discovery","text":"Local land and property gazetteer custodian"}
+add-item	{"cardinality":"n","datatype":"string","field":"fields","phase":"beta","register":"field","text":"Set of field names."}
+add-item	{"cardinality":"1","datatype":"string","field":"register","phase":"beta","register":"register","text":"A register name."}
+add-item	{"cardinality":"1","datatype":"string","field":"phase","phase":"beta","text":"Phase of a register or service as defined by the [digital service manual](https://www.gov.uk/service-manual)."}
+add-item	{"cardinality":"1","datatype":"string","field":"locality","phase":"alpha","text":"The area within a post town."}
+add-item	{"name":"field"}
+add-item	{"cardinality":"1","datatype":"text","field":"text","phase":"beta","text":"Description of register entry."}
+add-item	{"cardinality":"1","datatype":"string","field":"primary-address","phase":"discovery","register":"address","text":"An address which is the primary address for an address"}
+add-item	{"cardinality":"1","datatype":"string","field":"postcode","phase":"alpha","text":"UK Postcodes."}
+add-item	{"cardinality":"1","datatype":"string","field":"name-cy","phase":"discovery","text":"Welsh name for an entry"}
+add-item	{"cardinality":"1","datatype":"datetime","field":"start-date","phase":"beta","text":"Start datetime for the applicability of a register entry."}
+add-item	{"fields":["field","datatype","phase","register","cardinality","text"],"phase":"discovery","register":"field","registry":"cabinet-office","text":"Field names which may appear in a register"}
+add-item	{"cardinality":"1","datatype":"datetime","field":"end-date","phase":"beta","text":"End datetime for the applicability of a register entry."}
+add-item	{"cardinality":"1","datatype":"string","field":"latitude","phase":"alpha","text":"Latitude of a place."}
+add-item	{"cardinality":"1","datatype":"string","field":"country","phase":"beta","register":"country","text":"The country's 2-letter ISO 3166-2 alpha2 code."}
+add-item	{"cardinality":"1","datatype":"string","field":"country","phase":"beta","register":"country","text":"ISO 3166-2 two letter code for a country."}
+add-item	{"cardinality":"1","datatype":"string","field":"field","phase":"alpha","register":"field","text":"Field name of register entry."}
+add-item	{"cardinality":"1","datatype":"string","field":"registry","phase":"beta","text":"Body responsible for maintaining one or more registers"}
+append-entry	system	name	2017-07-14T11:27:05Z	sha-256:4971b4c234251bfc39f597e112ae1f3ba881d24bc77387288087d9ad7c3390bb
+append-entry	system	field:field	2017-01-27T16:34:30Z	sha-256:d3762b6076eaa68d26137da2c21daffcd66a27eda3014194cfec8ac9ddd1753e
+append-entry	system	field:datatype	2017-01-27T16:34:30Z	sha-256:ff1c1957df65b31a2b2e24be3ac1e2bf81d0d97ee327a3a9477b76c9921a4ec9
+append-entry	system	field:phase	2017-01-27T16:34:30Z	sha-256:4a199ba778d66910bb7b53e4cd7e53d6749849d7aec8a82b4124fb44ad8f6e00
+append-entry	system	field:register	2017-01-27T16:34:30Z	sha-256:98ea1be5b6664c6b60a1fc1e5ff73f28b41dfa45aebf2e7d3dd87da679d0b5d4
+append-entry	system	field:cardinality	2017-01-27T16:34:30Z	sha-256:1a8548f0f31c13b470a386242d6dc45604640a85ae8f2e05d486b97e19c97e34
+append-entry	system	field:text	2017-01-27T16:34:30Z	sha-256:a88f2002515f72bec7322e91d9acfece60510c9bbcecb64bd90bad072e5f2a2f
+append-entry	system	register:field	2017-01-30T11:54:05Z	sha-256:4ed1ffbdc48e7e4825ddf876ca6e182de1b6bd478648defcde810e07fad681cf
+append-entry	user	address	2017-01-23T12:23:07Z	sha-256:cf5700d23d4cd933574fbafb48ba6ace1c3b374b931a6183eeefab6f37106011
+append-entry	user	area	2017-01-23T12:23:07Z	sha-256:d8b50e38c1d16dc7abfa84329a5b43009b2b0c6ff0edd2cdd3d9f28b789c5767
+append-entry	user	cardinality	2017-01-23T12:23:07Z	sha-256:1a8548f0f31c13b470a386242d6dc45604640a85ae8f2e05d486b97e19c97e34
+append-entry	user	citizen-names	2017-01-23T12:23:07Z	sha-256:5e1b241c55cc79f573d329295bc49ca69afa57e5274c067b007649330b0e1907
+append-entry	user	copyright	2017-01-23T12:23:07Z	sha-256:1a854022d46e315c9b8751d231820afdfd234492357e842749515e86b76bdb2f
+append-entry	user	country	2017-01-23T12:23:07Z	sha-256:5a110f91639ee80def2a3bc5293d1130599ca82547402cfd6786a425ffe9b419
+append-entry	user	datatype	2017-01-23T12:23:07Z	sha-256:ff1c1957df65b31a2b2e24be3ac1e2bf81d0d97ee327a3a9477b76c9921a4ec9
+append-entry	user	end-date	2017-01-23T12:23:07Z	sha-256:165847f92aa8a11e178100216766b007ac400b57405e27707ab93974002637db
+append-entry	user	field	2017-01-23T12:23:07Z	sha-256:d3762b6076eaa68d26137da2c21daffcd66a27eda3014194cfec8ac9ddd1753e
+append-entry	user	fields	2017-01-23T12:23:07Z	sha-256:9c27b78d95ebc20a5a1446938614e883bc31410aba84759402592debfd4d49f4
+append-entry	user	latitude	2017-01-23T12:23:07Z	sha-256:52c98b6782a4631243970b55535cc6b90eb236006ee80a64bd8531d075a9065f
+append-entry	user	locality	2017-01-23T12:23:07Z	sha-256:4b21f41f73f1483b4be35171904cbe7adeb2256df14f384d91ff70d4c24e8199
+append-entry	user	longitude	2017-01-23T12:23:07Z	sha-256:105621a1707510d16be14b6a5a11347eda4dab0314a9d9a5f89a50602f7b71c6
+append-entry	user	name	2017-01-23T12:23:07Z	sha-256:e189e40c2d2493ea1e6cd89457f3dfe13e67e5e56ffb22eb500fb5efc052a4da
+append-entry	user	official-name	2017-01-23T12:23:07Z	sha-256:74e5bfa01f828d25824fcd2702a46df68103015a9ff2e707377cfc2fdd5a41d3
+append-entry	user	phase	2017-01-23T12:23:07Z	sha-256:4a199ba778d66910bb7b53e4cd7e53d6749849d7aec8a82b4124fb44ad8f6e00
+append-entry	user	postcode	2017-01-23T12:23:07Z	sha-256:689e7a836844817b102d0049c6d402fc630f1c9f284ee96d9b7ec24bc7e0c36a
+append-entry	user	property	2017-01-23T12:23:07Z	sha-256:b91ad25f9d6db4b2588ff1724c09e4bf18f13538862efdeb051c7b9c0a5f0eed
+append-entry	user	register	2017-01-23T12:23:07Z	sha-256:98ea1be5b6664c6b60a1fc1e5ff73f28b41dfa45aebf2e7d3dd87da679d0b5d4
+append-entry	user	registry	2017-01-23T12:23:07Z	sha-256:51d8eda8a9e5c8ae77697e8526a4c0462b8866d7f5f8fadf59a1aa719baad4f1
+append-entry	user	start-date	2017-01-23T12:23:07Z	sha-256:c84729159a23467e0775128392f97893e79487e54ee9f565e74eb819c6abf0f7
+append-entry	user	street	2017-01-23T12:23:07Z	sha-256:6f3c85090641b9a6b153681de23fa0c7c8ad7ae2cc67acb51bcbb6ba88453b7e
+append-entry	user	text	2017-01-23T12:23:07Z	sha-256:a88f2002515f72bec7322e91d9acfece60510c9bbcecb64bd90bad072e5f2a2f
+append-entry	user	town	2017-01-23T12:23:07Z	sha-256:66e63a0bf090589c2c6b6f04bb00b96344a3fed81dd0bd2696c762ed7029ddc3
+append-entry	user	address	2017-01-27T16:34:30Z	sha-256:30db80be0c8663ede0e41ff4fec72b6d082f4f4a011e0d61ca242c076508cf9a
+append-entry	user	cardinality	2017-01-27T16:34:30Z	sha-256:1a8548f0f31c13b470a386242d6dc45604640a85ae8f2e05d486b97e19c97e34
+append-entry	user	citizen-names	2017-01-27T16:34:30Z	sha-256:5e1b241c55cc79f573d329295bc49ca69afa57e5274c067b007649330b0e1907
+append-entry	user	copyright	2017-01-27T16:34:30Z	sha-256:1a854022d46e315c9b8751d231820afdfd234492357e842749515e86b76bdb2f
+append-entry	user	country	2017-01-27T16:34:30Z	sha-256:425e7a27ca31bf2131f50c737fdaa21e30138ef35b878ef199b9e2b623ffbdac
+append-entry	user	datatype	2017-01-27T16:34:30Z	sha-256:ff1c1957df65b31a2b2e24be3ac1e2bf81d0d97ee327a3a9477b76c9921a4ec9
+append-entry	user	end-date	2017-01-27T16:34:30Z	sha-256:165847f92aa8a11e178100216766b007ac400b57405e27707ab93974002637db
+append-entry	user	field	2017-01-27T16:34:30Z	sha-256:d3762b6076eaa68d26137da2c21daffcd66a27eda3014194cfec8ac9ddd1753e
+append-entry	user	fields	2017-01-27T16:34:30Z	sha-256:9c27b78d95ebc20a5a1446938614e883bc31410aba84759402592debfd4d49f4
+append-entry	user	name-cy	2017-01-27T16:34:30Z	sha-256:f8da81fdfe8c84867e0c5e4ca103db090d79f9e5ba48384858ebcc946ec7bf7d
+append-entry	user	name-gd	2017-01-27T16:34:30Z	sha-256:4fbfb5290ed63ede8d45e33c56195d0ac12b9b5b8695081150cced2ceccb079c
+append-entry	user	name	2017-01-27T16:34:30Z	sha-256:e189e40c2d2493ea1e6cd89457f3dfe13e67e5e56ffb22eb500fb5efc052a4da
+append-entry	user	official-name	2017-01-27T16:34:30Z	sha-256:74e5bfa01f828d25824fcd2702a46df68103015a9ff2e707377cfc2fdd5a41d3
+append-entry	user	parent-address	2017-01-27T16:34:30Z	sha-256:30646573a1ee84e5ad39b4aaf0d31794228ad07117acb1c1584f36312ac94052
+append-entry	user	phase	2017-01-27T16:34:30Z	sha-256:4a199ba778d66910bb7b53e4cd7e53d6749849d7aec8a82b4124fb44ad8f6e00
+append-entry	user	point	2017-01-27T16:34:30Z	sha-256:652319a12d0178c7829d0ac6570dd1cdf0b3d34ac6c4d26974d9b24b6efd545f
+append-entry	user	primary-address	2017-01-27T16:34:30Z	sha-256:14f5c17c570c355f748db69ea6087193a6875598e4f0c645720a9b88394ec52f
+append-entry	user	register	2017-01-27T16:34:30Z	sha-256:98ea1be5b6664c6b60a1fc1e5ff73f28b41dfa45aebf2e7d3dd87da679d0b5d4
+append-entry	user	registry	2017-01-27T16:34:30Z	sha-256:51d8eda8a9e5c8ae77697e8526a4c0462b8866d7f5f8fadf59a1aa719baad4f1
+append-entry	user	start-date	2017-01-27T16:34:30Z	sha-256:c84729159a23467e0775128392f97893e79487e54ee9f565e74eb819c6abf0f7
+append-entry	user	street-custodian	2017-01-27T16:34:30Z	sha-256:d1925b57bcb1d6909ca24b2de5819cf3f1bbccd93382bed8fb619e5cb92c0938
+append-entry	user	street	2017-01-27T16:34:30Z	sha-256:6f3c85090641b9a6b153681de23fa0c7c8ad7ae2cc67acb51bcbb6ba88453b7e
+append-entry	user	text	2017-01-27T16:34:30Z	sha-256:a88f2002515f72bec7322e91d9acfece60510c9bbcecb64bd90bad072e5f2a2f
+append-entry	user	country	2017-05-12T13:26:24Z	sha-256:a303d05bdbeb029440344e0f1148f5524b4a2f9076d1b0f36a95ff7d5eeedb0e
+assert-root-hash	sha-256:b07ba1534556b440937bc3f9eccfbb9140200c66a03c73050bdcfa60db63a752

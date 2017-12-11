@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# stub: registers-ruby-client 0.3.0 ruby lib
+# stub: registers-ruby-client 0.4.0 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "registers-ruby-client".freeze
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.date = "2017-11-06"
   s.email = "registers ~@nospam@~ digital.cabinet-office.gov.uk".freeze
   s.extra_rdoc_files = ["README.md".freeze]
-  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/registers_client.rb".freeze]
+  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/register_client_manager.rb".freeze]
   s.homepage = "https://github.com/openregister/registers-ruby-client".freeze
   s.licenses = ["MIT".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze]
