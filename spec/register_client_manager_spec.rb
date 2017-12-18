@@ -65,9 +65,9 @@ RSpec.describe RegistersClient::RegisterClientManager do
     country_rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
     field_rsf = File.read(File.join(dir, 'fixtures/field_register_test.rsf'))
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test").and_return(country_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "beta").and_return(country_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("field", "test").and_return(field_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 0).and_return(country_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "beta", 0).and_return(country_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("field", "test", 0).and_return(field_rsf)
 
     @config_options = { page_size: 10, cache_duration: 60 }
     @field_test_register_client = RegistersClient::RegisterClient.new("field", "test", @config_options)

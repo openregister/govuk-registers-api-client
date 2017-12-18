@@ -17,6 +17,14 @@ module RegistersClient
       @phase = phase
       @config_options = config_options
 
+      @data = {
+        records: { user: {}, system: {} },
+        entries: { user: [], system: [] },
+        items: {},
+        user_entry_number: 0,
+        system_entry_number: 0
+      }
+
       get_data
     end
 
@@ -99,9 +107,7 @@ module RegistersClient
 
     def refresh_data
       @store.set('data') do
-        rsf = download_rsf(@register, @phase)
-        data = parse_rsf(rsf)
-        MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
+        update_cache(@register, @phase)
       end
     end
 
@@ -109,23 +115,21 @@ module RegistersClient
 
     def get_data
       @store.get_or_set('data') do
-        rsf = download_rsf(@register, @phase)
-        data = parse_rsf(rsf)
-        MiniCache::Data.new(data, expires_in: @config_options[:cache_duration])
+        update_cache(@register, @phase)
       end
     end
 
-    def download_rsf(register, phase)
-      RestClient.get("https://#{register}.#{phase}.openregister.org/download-rsf")
+    def update_cache(register, phase)
+      rsf = download_rsf(register, phase, @data[:user_entry_number])
+      update_data_from_rsf(rsf, @data)
+      @data
     end
 
-    def parse_rsf(rsf)
-      items = {}
-      entries = { user: [], system: [] }
-      records = { user: {}, system: {} }
-      user_entry_number = 1
-      system_entry_number = 1
+    def download_rsf(register, phase, start_entry_number)
+      RestClient.get("https://#{register}.#{phase}.openregister.org/download-rsf/#{start_entry_number}")
+    end
 
+    def update_data_from_rsf(rsf, data)
       rsf.each_line do |line|
         line.slice!("\n")
         params = line.split("\t")
@@ -133,35 +137,33 @@ module RegistersClient
 
         if command == 'add-item'
           item = RegistersClient::Item.new(line)
-          items[item.hash.to_s] = item
+          data[:items][item.hash.to_s] = item
         elsif command == 'append-entry'
           if params[1] == 'user'
-            entry = Entry.new(line, user_entry_number)
-            entries[:user] << entry
+            data[:user_entry_number] += 1
 
-            if !records[:user].key?(entry.key)
-              records[:user][entry.key] = []
+            entry = Entry.new(line, data[:user_entry_number])
+            data[:entries][:user] << entry
+
+            if !data[:records][:user].key?(entry.key)
+              data[:records][:user][entry.key] = []
             end
 
-            records[:user][entry.key] << user_entry_number
-
-            user_entry_number += 1
+            data[:records][:user][entry.key] << data[:user_entry_number]
           else
-            entry = Entry.new(line, system_entry_number)
-            entries[:system] << entry
+            data[:system_entry_number] += 1
 
-            if !records[:system].key?(entry.key)
-              records[:system][entry.key] = []
+            entry = Entry.new(line, data[:system_entry_number])
+            data[:entries][:system] << entry
+
+            if !data[:records][:system].key?(entry.key)
+              data[:records][:system][entry.key] = []
             end
 
-            records[:system][entry.key] << system_entry_number
-
-            system_entry_number += 1
+            data[:records][:system][entry.key] << data[:system_entry_number]
           end
         end
       end
-
-      { records: records, entries: entries, items: items }
     end
   end
 end

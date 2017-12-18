@@ -314,13 +314,35 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(records.count).to eq(7)
       expect(entries.count).to eq(9)
     end
+
+    it 'should keep the existing register data when no new updates exist' do
+      client = RegistersClient::RegisterClient.new("country", "test", @config_options)
+      client.refresh_data
+      records = client.get_records
+      entries = client.get_entries
+
+      expect(records.count).to eq(7)
+      expect(entries.count).to eq(9)
+
+      client.refresh_data
+      records = client.get_records
+      entries = client.get_entries
+
+      expect(records.count).to eq(7)
+      expect(entries.count).to eq(9)
+    end
   end
 
   def setup(config_options = {})
     dir = File.dirname(__FILE__)
-    @rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
-    @update_rsf = File.read(File.join(dir, 'fixtures/country_register_update.rsf'))
+    rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
+    update_rsf = File.read(File.join(dir, 'fixtures/country_register_update.rsf'))
+    no_new_updates_rsf = "assert-root-hash\tsha-256:725bf37d0ee609f7a9cb3e42af574443df9215c85772a1626eaa93cdd505e71f"
+
     @config_options = { page_size: 100, cache_duration: 30 }.merge(config_options)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(any_args).and_return(@rsf, @update_rsf)
+
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 0).and_return(rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 7).and_return(update_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 9).and_return(no_new_updates_rsf)
   end
 end
