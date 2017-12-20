@@ -28,8 +28,8 @@ module RegistersClient
       get_data
     end
 
-    def get_entries
-      EntryCollection.new(get_data[:entries][:user], @config_options.fetch(:page_size))
+    def get_entries(since_entry_number = 0)
+      EntryCollection.new(get_entries_subset_for_entry_type(since_entry_number, :user), @config_options.fetch(:page_size))
     end
 
     def get_records
@@ -65,34 +65,14 @@ module RegistersClient
       get_metadata_records.select { |record| record.entry.key == 'custodian'}.first
     end
 
-    def get_records_with_history
-      records_with_history = {}
-
-      get_data[:records][:user].map do |_k, record_entry_numbers|
-        records_with_history[_k] = []
-
-        record_entry_numbers.each do |entry_number|
-          entry = get_data[:entries][:user][entry_number - 1]
-          item = get_data[:items][entry.item_hash]
-          records_with_history[_k] << Record.new(entry, item)
-        end
-      end
+    def get_records_with_history(since_entry_number = 0)
+      records_with_history = get_records_with_history_for_entry_type(since_entry_number, :user)
 
       RecordMapCollection.new(records_with_history, @config_options.fetch(:page_size))
     end
 
-    def get_metadata_records_with_history
-      metadata_records_with_history = {}
-
-      get_data[:records][:system].map do |_k, record_entry_numbers|
-        metadata_records_with_history[_k] = []
-
-        record_entry_numbers.each do |entry_number|
-          entry = get_data[:entries][:system][entry_number - 1]
-          item = get_data[:items][entry.item_hash]
-          metadata_records_with_history[_k] << Record.new(entry, item)
-        end
-      end
+    def get_metadata_records_with_history(since_entry_number = 0)
+      metadata_records_with_history = get_records_with_history_for_entry_type(since_entry_number, :system)
 
       RecordMapCollection.new(metadata_records_with_history, @config_options.fetch(:page_size))
     end
@@ -117,6 +97,29 @@ module RegistersClient
       @store.get_or_set('data') do
         update_cache(@register, @phase)
       end
+    end
+
+    def get_entries_subset_for_entry_type(since_entry_number, entry_type)
+      start_index = !since_entry_number.nil? && since_entry_number > 0 ? since_entry_number : 0
+      current_entry_number = entry_type == :user ? @data[:user_entry_number] : @data[:system_entry_number]
+      length = current_entry_number - start_index
+
+      get_data[:entries][entry_type].slice(start_index, length)
+    end
+
+    def get_records_with_history_for_entry_type(since_entry_number, entry_type)
+      records_with_history = {}
+
+      get_entries_subset_for_entry_type(since_entry_number, entry_type).each do |entry|
+        if (!records_with_history.key?(entry.key))
+          records_with_history[entry.key] = []
+        end
+
+        item = get_data[:items][entry.item_hash]
+        records_with_history[entry.key] << Record.new(entry, item)
+      end
+
+      records_with_history
     end
 
     def update_cache(register, phase)
