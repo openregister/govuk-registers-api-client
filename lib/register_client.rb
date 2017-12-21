@@ -122,7 +122,7 @@ module RegistersClient
     def update_cache(register, phase)
       rsf = download_rsf(register, phase, @data[:user_entry_number])
       update_data_from_rsf(rsf, @data)
-      @data
+      MiniCache::Data.new(@data, expires_in: @config_options[:cache_duration])
     end
 
     def download_rsf(register, phase, start_entry_number)
