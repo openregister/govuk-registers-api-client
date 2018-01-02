@@ -16,13 +16,13 @@ registers_client = RegistersClient::RegisterClientManager.new({
 })
 ```
 
-The `RegisterClientManager` maintains individual `RegisterClient`s for every register that you wish to get data from. When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
+The `RegisterClientManager` maintains individual instances of `RegisterClient` for each register that you access. When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
 - `cache_duration`: the amount of time (in seconds) register data is cached in-memory before any updates are retrieved
 - `page_size`: the number of results returned per page when using the `page` method of any of the collection classes (see below for more information)
 
 By default, `cache_duration` is set to `3600`(s) and `page_size` is set to `100`.
 
-## Items, Entries and Records
+## Items, entries and records
 
 ### Item
 
@@ -314,7 +314,7 @@ Expected output (click here to expand):
 
 ## Collections
 
-The majority of the methods available in the `RegisterClient` (described in more detail in the next section) return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
+The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
 
 ### EntryCollection
 
@@ -326,9 +326,9 @@ Yields each `Entry` object in the collection.
 
 #### `page(int page=1)`
 
-Returns all `Entry` objects in the collection, according to the specified `page` number (defaults to `1`) and `page_size` (defined when creating the `RegisterClientManager`).
+Returns all `Entry` objects in the collection, according to the specified `page` number (defaults to `1`).
 
-If there are less results than the current `page_size`, all results are returned.
+If there are fewer results than the current `page_size`, all results are returned.
 
 ### RecordCollection
 
@@ -340,9 +340,9 @@ Yields each `Record` object in the collection.
 
 #### `page(int page=1)`
 
-Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`) and `page_size` (defined when creating the `RegisterClientManager`)
+Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`).
 
-If there are less results than the current `page_size`, all results are returned.
+If there are fewer results than the current `page_size`, all results are returned.
 
 ### RecordMapCollection
 
