@@ -1,7 +1,7 @@
 require 'register_client'
 
 module RegistersClient
-    VERSION = '0.5.1'
+    VERSION = '0.6.0'
     class RegisterClientManager
       def initialize(config_options = {})
         @config_options = defaults.merge(config_options)

@@ -34,6 +34,16 @@ RSpec.describe RegistersClient::RegisterClient do
 
       expect(entries.instance_variable_get('@page_size')).to eq(2)
     end
+
+    it 'should get a subset of entries when a start entry number is specified' do
+      client = RegistersClient::RegisterClient.new("country", "test", @config_options)
+
+      actual_entries = client.get_entries(4)
+
+      expect(actual_entries).to be_a(RegistersClient::EntryCollection)
+      expect(actual_entries.count).to eq(3)
+      expect(actual_entries.map { |e| e.key }).to contain_exactly("AL", "CZ", "CZ")
+    end
   end
 
   describe 'get_records' do
@@ -100,6 +110,18 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(records_with_history).to be_a(RegistersClient::RecordMapCollection)
       expect(records_with_history.count).to eq(6)
       expect(records_with_history.get_records_for_key('CZ')[0].item.hash).to eq("sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed")
+      expect(records_with_history.get_records_for_key('CZ')[1].item.hash).to eq("sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720")
+    end
+
+    it 'should get a subset of records with history when a start entry number is specified' do
+      client = RegistersClient::RegisterClient.new("country", "test", @config_options)
+
+      records_with_history = client.get_records_with_history(3)
+
+      expect(records_with_history).to be_a(RegistersClient::RecordMapCollection)
+      expect(records_with_history.count).to eq(3)
+      expect(records_with_history.get_records_for_key('AF')[0].item.hash).to eq("sha-256:6bf7f01f268fa6d18e53eb7d5ebadb41c25c4aa2eedecfb7bc863e233ec99e24")
+      expect(records_with_history.get_records_for_key('AL')[0].item.hash).to eq("sha-256:9d04a7e04ac92ab809a7471e7142617bc30a4b2d2f30c1002520a4a1d216f2a5")
       expect(records_with_history.get_records_for_key('CZ')[1].item.hash).to eq("sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720")
     end
   end
@@ -173,6 +195,18 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(metadata_records_with_history.count).to eq(9)
       expect(metadata_records_with_history.get_records_for_key('field:start-date')[0].item.hash).to eq("sha-256:1cff4c622577fabd35917760b04bc304af3b950e19735b60152c19f18b55e75e")
       expect(metadata_records_with_history.get_records_for_key('field:start-date')[1].item.hash).to eq("sha-256:f09c439836eb6fccfb0680fa98dfc3d0300d1ceb2a43eb3c26b3eed01a42d2c2")
+    end
+
+    it 'should get a subset of metadata records with history when a start entry number is specified' do
+      client = RegistersClient::RegisterClient.new("country", "test", @config_options)
+
+      metadata_records_with_history = client.get_metadata_records_with_history(9)
+
+      expect(metadata_records_with_history).to be_a(RegistersClient::RecordMapCollection)
+      expect(metadata_records_with_history.count).to eq(3)
+      expect(metadata_records_with_history.get_records_for_key('field:start-date')[0].item.hash).to eq("sha-256:f09c439836eb6fccfb0680fa98dfc3d0300d1ceb2a43eb3c26b3eed01a42d2c2")
+      expect(metadata_records_with_history.get_records_for_key('field:end-date')[0].item.hash).to eq("sha-256:c5845bfc15577e8c120970ba084f1dc2c82b10e703f80d1efe4f694295a5a71d")
+      expect(metadata_records_with_history.get_records_for_key('custodian')[0].item.hash).to eq("sha-256:f9842397c9188c9f8e6a05c0728edb115880f62d39f07ab260cced3b6254941c")
     end
   end
 
