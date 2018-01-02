@@ -10,10 +10,438 @@ gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-rub
 ```
 require 'register_client_manager'
 
-registers_client = RegistersClient::RegisterClientManager.new({ cache_duration: 3600 })
+registers_client = RegistersClient::RegisterClientManager.new({
+  cache_duration: 3600,
+  page_size: 10
+})
 ```
 
-_Note: `cache_duration`  is the amount of time a register is cached in-memory, before being re-downloaded._
+The `RegisterClientManager` maintains individual instances of `RegisterClient` for each register that you access. When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
+- `cache_duration`: the amount of time (in seconds) register data is cached in-memory before any updates are retrieved
+- `page_size`: the number of results returned per page when using the `page` method of any of the collection classes (see below for more information)
+
+By default, `cache_duration` is set to `3600`(s) and `page_size` is set to `100`.
+
+## Items, entries and records
+
+### Item
+
+#### `hash`
+
+Returns the SHA-256 hash of the item.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"
+
+```
+</details>
+
+#### `value`
+
+Returns the key-value pairs represented by the item in a `JSON` object.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.value
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}
+
+```
+</details>
+
+#### `has_end_date`
+
+Returns a boolean to describe whether the item contains a key-value pair for the `end-date` field.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.has_end_date
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+true
+```
+</details>
+
+### Entry
+
+#### `entry_number`
+
+Gets the entry number of the entry.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.entry_number
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+52
+```
+</details>
+
+#### `key`
+
+Gets the key of the entry.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+register_data = registers_client.get_register 'country', 'beta'
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.key
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+CZ
+```
+</details>
+
+#### `timestamp`
+
+Gets the timestamp of when the entry was appended to the register.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.timestamp
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+2016-04-05T13:23:05Z
+```
+</details>
+
+#### `item_hash`
+
+Gets the SHA-256 hash of the item which the entry points to.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.item_hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed
+```
+</details>
+
+#### `value`
+
+Returns the entry as a hash.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.value.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
+```
+</details>
+
+### Record
+
+#### `entry`
+
+Gets the `Entry` object associated with the record.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
+record.entry.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"entry_number":205,"parsed_entry":{"key":"CZ","timestamp":"2016-11-11T16:25:07Z","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720"}}"
+```
+</details>
+
+#### `item`
+
+Gets the `Item` object associated with the record.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
+record.item.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"item_json":"{\"citizen-names\":\"Czech\",\"country\":\"CZ\",\"name\":\"Czechia\",\"official-name\":\"The Czech Republic\",\"start-date\":\"1993-01-01\"}","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720","parsed_item":null}"
+```
+</details>
+
+## Collections
+
+The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
+
+### EntryCollection
+
+A collection of `Entry` objects.
+
+#### `each`
+
+Yields each `Entry` object in the collection.
+
+#### `page(int page=1)`
+
+Returns all `Entry` objects in the collection, according to the specified `page` number (defaults to `1`).
+
+If there are fewer results than the current `page_size`, all results are returned.
+
+### RecordCollection
+
+A collection of `Record` objects.
+
+#### `each`
+
+Yields each `Record` object in the collection.
+
+#### `page(int page=1)`
+
+Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`).
+
+If there are fewer results than the current `page_size`, all results are returned.
+
+### RecordMapCollection
+
+A map of record key to list of both the current and historical `Record` objects for each key.
+
+#### `each`
+
+Yields each record key to list of current and historical `Record` objects in the collection, in the following format:
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+register_data.get_records_with_history.each do |result|
+  puts result.to_json
+end
+
+```
+</details>
+<details>
+<summary>
+Expected output for the first `result` (click here to expand):
+ </summary>
+
+```
+
+"{"key":"SU","records":[{"entry":{"rsf_line":null,"entry_number":1,"parsed_entry":{"key":"SU","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"}},"item":{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}}]}"
+
+```
+</details>
+
+#### `get_records_for_key(string key)`
+
+Returns both the current and historical `Record` objects for a given key, or raises a `KeyError` if no records exist for the given key.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+register_data.get_records_with_history.get_records_for_key('SU')
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+"{[{"entry":{"rsf_line":null,"entry_number":1,"parsed_entry":{"key":"SU","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"}},"item":{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}}]}"
+
+```
+</details>
+
+#### `paginator`
+
+Returns an enumerator of a map of record key to list of current and historical `Record` objects in the collection, in slices specified by `page_size` (defined when creating the `RegisterClientManager`).
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register 'country', 'beta'
+
+enumerator = register_data.get_records_with_history.paginator
+enumerator.next.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+[["SU",[{"entry":{"rsf_line":null,"entry_number":1,"parsed_entry":{"key":"SU","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"}},"item":{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}}]],["DE",[{"entry":{"rsf_line":null,"entry_number":2,"parsed_entry":{"key":"DE","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625"}},"item":{"item_json":"{\"citizen-names\":\"West German\",\"country\":\"DE\",\"end-date\":\"1990-10-02\",\"name\":\"West Germany\",\"official-name\":\"Federal Republic of Germany\"}","item_hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","parsed_item":null}},{"entry":{"rsf_line":null,"entry_number":71,"parsed_entry":{"key":"DE","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:747dbb718cb9f9799852e7bf698c499e6b83fb1a46ec06dbd6087f35c1e955cc"}},"item":{"item_json":"{\"citizen-names\":\"German\",\"country\":\"DE\",\"name\":\"Germany\",\"official-name\":\"The Federal Republic of Germany\",\"start-date\":\"1990-10-03\"}","item_hash":"sha-256:747dbb718cb9f9799852e7bf698c499e6b83fb1a46ec06dbd6087f35c1e955cc","parsed_item":n
+ull}}]],
+
+...
+
+["AD",[{"entry":{"rsf_line":null,"entry_number":10,"parsed_entry":{"key":"AD","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:14fcb5099f0eff4c40d5a85b0e3c2f1a04337dc69dace1fc5c64ec9758a19b13"}},"item":{"item_json":"{\"citizen-names\":\"Andorran\",\"country\":\"AD\",\"name\":\"Andorra\",\"official-name\":\"The Principality of Andorra\"}","item_hash":"sha-256:14fcb5099f0eff4c40d5a85b0e3c2f1a04337dc69dace1fc5c64ec9758a19b13","parsed_item":null}}]]]"
+
+```
+</details>
 
 ## Accessing methods
 
