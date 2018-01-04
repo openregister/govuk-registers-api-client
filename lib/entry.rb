@@ -1,8 +1,9 @@
 module RegistersClient
   class Entry
-    def initialize(rsf_line, entry_number)
+    def initialize(rsf_line, entry_number, entry_type)
       @rsf_line = rsf_line
       @entry_number = entry_number
+      @entry_type = entry_type
 
       @parsed_entry = nil
     end
@@ -21,6 +22,10 @@ module RegistersClient
 
     def item_hash
       get_entry[:item_hash]
+    end
+
+    def entry_type
+      @entry_type
     end
 
     def value
