@@ -5,7 +5,7 @@ In your Gemfile add:
 ```
 gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-ruby-client.git'
 ```
-## Getting started
+## Getting started - Using the `RegisterClientManager`
 
 ```
 require 'register_client_manager'
@@ -22,6 +22,37 @@ The `RegisterClientManager` maintains individual instances of `RegisterClient` f
 
 By default, `cache_duration` is set to `3600`(s) and `page_size` is set to `100`.
 
+There is one public method available on `RegisterClientManager`:
+
+### `get_register(register, phase, data_store = nil)`
+
+Gets the `RegisterClient` instance for the given `register` name and `phase`.
+
+The `data_store` parameter specifies the data store to use accessing a particular register. By default this parameter can be omitted to use the `InMemoryDataStore`; however, a custom data store can be created (for example, to insert register data directly into your Postgres database) which `includes DataStore` module and implements the methods it defines.
+
+<details>
+<summary>
+Example usage (click here to expand):
+</summary>
+
+```
+
+registers_client.get_register('country', 'beta', nil)
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f740>
+
+```
+</details>
+
 ## Items, entries and records
 
 ### Item
@@ -37,7 +68,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
 item.hash
 
@@ -66,7 +97,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
 item.value
@@ -96,7 +127,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
 item.has_end_date
@@ -126,7 +157,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
 entry.entry_number
@@ -153,7 +184,7 @@ Example usage (click here to expand):
 </summary>
 
 ```
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
 entry.key
@@ -181,7 +212,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
 entry.timestamp
@@ -209,7 +240,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
 entry.item_hash
@@ -237,7 +268,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
 entry.value.to_json
@@ -267,7 +298,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
 record.entry.to_json
@@ -295,7 +326,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
 record.item.to_json
@@ -359,7 +390,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_records_with_history.each do |result|
   puts result.to_json
@@ -390,7 +421,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_records_with_history.get_records_for_key('SU')
 
@@ -419,7 +450,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 enumerator = register_data.get_records_with_history.paginator
 enumerator.next.to_json
@@ -458,7 +489,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_entries.first.item_hash
 
@@ -488,7 +519,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_records.first.item.value
 
@@ -520,7 +551,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_metadata_records.first.item.value
 
@@ -551,7 +582,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_field_definitions.first.item.value
 
@@ -584,7 +615,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_register_definition.item.value
 
@@ -615,7 +646,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_custodian.item.value['custodian']
 
@@ -647,7 +678,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 germany = register_data.get_records_with_history.get_records_for_key('DE').first
 puts germany.to_json
@@ -680,7 +711,7 @@ Example usage (click here to expand):
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_current_records.first.item
 
@@ -710,7 +741,7 @@ Example usage (click here to expand)
 
 ```
 
-register_data = registers_client.get_register 'country', 'beta'
+register_data = registers_client.get_register('country', 'beta')
 
 register_data.get_expired_records.first.item
 
@@ -729,6 +760,6 @@ Expected output (click here to expand)
 
 </details>
 
-### `get_refresh_data`
+### `refresh_data`
 
-Redownloads register data. Call this method when you want to refresh data immediately rather than waiting for the `cache_duration` to expire.
+Downloads register data. Call this method when you want to refresh data immediately rather than waiting for the `cache_duration` to expire.
