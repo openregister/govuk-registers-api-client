@@ -1,5 +1,6 @@
 require 'rest-client'
 require 'json'
+require 'exceptions/invalid_register_error'
 
 module RegistersClient
   class RegisterClient
@@ -79,8 +80,9 @@ module RegistersClient
     end
 
     def refresh_data
-      latest_entry_number = @data_store.get_latest_entry_number(:user)
-      rsf = download_rsf(@register, @phase, latest_entry_number)
+      rsf = download_rsf(@register, @phase, @user_entry_number)
+
+      validate_register_integrity(rsf, @user_entry_number)
       update_data_from_rsf(rsf, @data_store)
     end
 
@@ -107,6 +109,24 @@ module RegistersClient
       end
 
       records_with_history
+    end
+
+    def get_register_proof(register, phase)
+      @register_proof = JSON.parse(RestClient.get("https://#{register}.#{phase}.openregister.org/proof/register/merkle:sha-256"))
+    end
+
+    def validate_register_integrity(rsf, current_entry_number)
+      rsf_lines = rsf.split("\n")
+      latest_root_hash = rsf_lines[rsf_lines.length - 1].split("\t")[1]
+      register_proof = get_register_proof(@register, @phase)
+
+      if (register_proof['total-entries'] < current_entry_number)
+        raise InvalidRegisterError, 'Register has been reloaded with different data - different number of entries'
+      end
+
+      if (register_proof['root-hash'] != latest_root_hash)
+        raise InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match'
+      end
     end
 
     def download_rsf(register, phase, start_entry_number)

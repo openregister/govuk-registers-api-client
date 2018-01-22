@@ -86,6 +86,19 @@ RSpec.describe RegistersClient::RegisterClientManager do
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "beta", 0).and_return(country_rsf)
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("field", "test", 0).and_return(field_rsf)
 
+    register_proof_for_country_rsf = {
+        "total-entries" => 7,
+        "root-hash" => 'sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d'
+    }
+    register_proof_for_field_rsf = {
+        "total-entries" => 48,
+        "root-hash" => 'sha-256:b07ba1534556b440937bc3f9eccfbb9140200c66a03c73050bdcfa60db63a752'
+    }
+
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(register_proof_for_country_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "beta").and_return(register_proof_for_country_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("field", "test").and_return(register_proof_for_field_rsf)
+
     @config_options = { page_size: 10, cache_duration: 60 }
     @page_size = 10
     @field_data_store = RegistersClient::InMemoryDataStore.new(@config_options)

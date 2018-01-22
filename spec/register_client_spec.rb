@@ -450,13 +450,37 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(records.count).to eq(7)
       expect(entries.count).to eq(9)
     end
+
+    it 'should throw an InvalidRegisterError when there are less entries in the register than there are in memory' do
+      client = RegistersClient::RegisterClient.new("country", "test", @data_store, @page_size)
+
+      reloaded_register_proof = {
+          "total-entries" => 4,
+          "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
+      }
+      allow(client).to receive(:get_register_proof).with("country", "test").and_return(reloaded_register_proof)
+
+      expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - different number of entries')
+    end
+
+    it 'should throw an InvalidRegisterError when the latest root hash from the downloaded RSF file does not match the register proof' do
+      client = RegistersClient::RegisterClient.new("country", "test", @data_store, @page_size)
+
+      reloaded_register_proof = {
+          "total-entries" => 7,
+          "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
+      }
+      allow(client).to receive(:get_register_proof).with("country", "test").and_return(reloaded_register_proof)
+
+      expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match')
+    end
   end
 
   def setup(config_options = {})
     dir = File.dirname(__FILE__)
     rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
     update_rsf = File.read(File.join(dir, 'fixtures/country_register_update.rsf'))
-    no_new_updates_rsf = "assert-root-hash\tsha-256:725bf37d0ee609f7a9cb3e42af574443df9215c85772a1626eaa93cdd505e71f"
+    no_new_updates_rsf = "assert-root-hash\tsha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb"
 
     @config_options = { page_size: 100, cache_duration: 30 }.merge(config_options)
     @page_size = 100
@@ -465,5 +489,17 @@ RSpec.describe RegistersClient::RegisterClient do
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 0).and_return(rsf)
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 7).and_return(update_rsf)
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 9).and_return(no_new_updates_rsf)
+
+    register_proof_for_country_rsf = {
+        "total-entries" => 7,
+        "root-hash" => 'sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d'
+    }
+
+    register_proof_for_country_update_rsf = {
+        "total-entries" => 9,
+        "root-hash" => 'sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb'
+    }
+
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(register_proof_for_country_rsf, register_proof_for_country_update_rsf)
   end
 end
