@@ -474,7 +474,7 @@ ull}}]],
 ```
 </details>
 
-## Accessing methods
+## Other methods
 
 _Note: All examples use the `country` register._
 
