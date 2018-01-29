@@ -1,11 +1,13 @@
 # GOV.UK Registers Ruby Client
 
+You can use this Ruby client to integrate your service with GOV.UK Registers. 
+
 ## Installation
 In your Gemfile add:
 ```
 gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-ruby-client.git'
 ```
-## Getting started - Using the `RegisterClientManager`
+## Getting started 
 
 ```
 require 'register_client_manager'
@@ -16,11 +18,11 @@ registers_client = RegistersClient::RegisterClientManager.new({
 })
 ```
 
-The `RegisterClientManager` maintains individual instances of `RegisterClient` for each register that you access. When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
-- `cache_duration`: the amount of time (in seconds) register data is cached in-memory before any updates are retrieved
-- `page_size`: the number of results returned per page when using the `page` method of any of the collection classes (see below for more information)
+The `RegisterClientManager` maintains individual instances of `RegisterClient` for each register you access. 
 
-By default, `cache_duration` is set to `3600`(s) and `page_size` is set to `100`.
+When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
+- `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
+- `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
 There is one public method available on `RegisterClientManager`:
 
