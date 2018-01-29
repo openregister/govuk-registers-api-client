@@ -474,7 +474,7 @@ ull}}]],
 ```
 </details>
 
-## Other methods
+## `RegisterClient`
 
 _Note: All examples use the `country` register._
 
