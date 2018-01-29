@@ -268,12 +268,12 @@ RSpec.describe RegistersClient::InMemoryDataStore do
         "root-hash" => 'sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb'
     }
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 0).and_return(rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(register_proof_for_country_rsf, register_proof_for_country_update_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(register_proof_for_country_rsf, register_proof_for_country_update_rsf)
 
     @data_store = RegistersClient::InMemoryDataStore.new(@config_options)
 
     # Run the RSF through the data store
-    RegistersClient::RegisterClient.new("country", "test", @data_store, 2)
+    RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, 2)
   end
 end

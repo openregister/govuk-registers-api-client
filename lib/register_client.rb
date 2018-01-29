@@ -4,9 +4,8 @@ require 'exceptions/invalid_register_error'
 
 module RegistersClient
   class RegisterClient
-    def initialize(register, phase, data_store, page_size)
-      @register = register
-      @phase = phase
+    def initialize(register_url, data_store, page_size)
+      @register_url = register_url
       @data_store = data_store
       @page_size = page_size
 
@@ -80,7 +79,7 @@ module RegistersClient
     end
 
     def refresh_data
-      rsf = download_rsf(@register, @phase, @user_entry_number)
+      rsf = download_rsf(@user_entry_number)
 
       validate_register_integrity(rsf, @user_entry_number)
       update_data_from_rsf(rsf, @data_store)
@@ -111,14 +110,14 @@ module RegistersClient
       records_with_history
     end
 
-    def get_register_proof(register, phase)
-      @register_proof = JSON.parse(RestClient.get("https://#{register}.#{phase}.openregister.org/proof/register/merkle:sha-256"))
+    def get_register_proof
+      @register_proof = JSON.parse(RestClient.get(@register_url + "/proof/register/merkle:sha-256"))
     end
 
     def validate_register_integrity(rsf, current_entry_number)
       rsf_lines = rsf.split("\n")
       latest_root_hash = rsf_lines[rsf_lines.length - 1].split("\t")[1]
-      register_proof = get_register_proof(@register, @phase)
+      register_proof = get_register_proof
 
       if (register_proof['total-entries'] < current_entry_number)
         raise InvalidRegisterError, 'Register has been reloaded with different data - different number of entries'
@@ -129,8 +128,8 @@ module RegistersClient
       end
     end
 
-    def download_rsf(register, phase, start_entry_number)
-      RestClient.get("https://#{register}.#{phase}.openregister.org/download-rsf/#{start_entry_number}")
+    def download_rsf(start_entry_number)
+      RestClient.get(@register_url + "/download-rsf/#{start_entry_number}")
     end
 
     def update_data_from_rsf(rsf, data_store)
