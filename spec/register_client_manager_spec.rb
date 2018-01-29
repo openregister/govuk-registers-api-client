@@ -75,6 +75,15 @@ RSpec.describe RegistersClient::RegisterClientManager do
 
       expect(register_client.instance_variable_get('@page_size')).to eq(30)
     end
+
+    it 'should use correct register URL given environment' do
+      client_manager = RegistersClient::RegisterClientManager.new(@config_options)
+      allow_any_instance_of(RegistersClient::RegisterClient).to receive(:refresh_data).and_return(nil)
+
+      expect(client_manager.get_register("country", "beta", nil).instance_variable_get(:@register_url)).to eq('https://country.register.gov.uk')
+      expect(client_manager.get_register("territory", "alpha", nil).instance_variable_get(:@register_url)).to eq('https://territory.alpha.openregister.org')
+      expect(client_manager.get_register("vehicle", "discovery", nil).instance_variable_get(:@register_url)).to eq('https://vehicle.cloudapps.digital')
+    end
   end
 
   def setup
@@ -98,15 +107,15 @@ RSpec.describe RegistersClient::RegisterClientManager do
     @country_beta_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
 
     stub_request(:get, "https://field.test.openregister.org/download-rsf/0").to_return(status: 200, body: field_rsf)
-    stub_request(:get, "https://country.beta.openregister.org/download-rsf/0").to_return(status: 200, body: country_rsf)
+    stub_request(:get, "https://country.register.gov.uk/download-rsf/0").to_return(status: 200, body: country_rsf)
     stub_request(:get, "https://country.test.openregister.org/download-rsf/0").to_return(status: 200, body: country_rsf)
 
     stub_request(:get, "https://field.test.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_field_rsf.to_json)
-    stub_request(:get, "https://country.beta.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
+    stub_request(:get, "https://country.register.gov.uk/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
     stub_request(:get, "https://country.test.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
 
     @field_test_register_client = RegistersClient::RegisterClient.new('https://field.test.openregister.org', @field_data_store, @page_size)
     @country_test_register_client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @country_test_data_store, @page_size)
-    @country_beta_register_client = RegistersClient::RegisterClient.new('https://country.beta.openregister.org', @country_beta_data_store, @page_size)
+    @country_beta_register_client = RegistersClient::RegisterClient.new('https://country.register.gov.uk', @country_beta_data_store, @page_size)
   end
 end
