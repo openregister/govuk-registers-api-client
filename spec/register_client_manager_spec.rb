@@ -82,9 +82,6 @@ RSpec.describe RegistersClient::RegisterClientManager do
     country_rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
     field_rsf = File.read(File.join(dir, 'fixtures/field_register_test.rsf'))
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(country_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(field_rsf)
-
     register_proof_for_country_rsf = {
         "total-entries" => 7,
         "root-hash" => 'sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d'
@@ -94,15 +91,19 @@ RSpec.describe RegistersClient::RegisterClientManager do
         "root-hash" => 'sha-256:b07ba1534556b440937bc3f9eccfbb9140200c66a03c73050bdcfa60db63a752'
     }
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(register_proof_for_country_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(register_proof_for_country_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(register_proof_for_field_rsf)
-
     @config_options = { page_size: 10, cache_duration: 60 }
     @page_size = 10
     @field_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
     @country_test_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
     @country_beta_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
+
+    stub_request(:get, "https://field.test.openregister.org/download-rsf/0").to_return(status: 200, body: field_rsf)
+    stub_request(:get, "https://country.beta.openregister.org/download-rsf/0").to_return(status: 200, body: country_rsf)
+    stub_request(:get, "https://country.test.openregister.org/download-rsf/0").to_return(status: 200, body: country_rsf)
+
+    stub_request(:get, "https://field.test.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_field_rsf.to_json)
+    stub_request(:get, "https://country.beta.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
+    stub_request(:get, "https://country.test.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
 
     @field_test_register_client = RegistersClient::RegisterClient.new('https://field.test.openregister.org', @field_data_store, @page_size)
     @country_test_register_client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @country_test_data_store, @page_size)
