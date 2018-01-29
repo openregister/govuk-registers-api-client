@@ -471,7 +471,7 @@ RSpec.describe RegistersClient::RegisterClient do
           "total-entries" => 4,
           "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
       }
-      allow(client).to receive(:get_register_proof).with('https://country.test.openregister.org').and_return(reloaded_register_proof)
+      allow(client).to receive(:get_register_proof).and_return(reloaded_register_proof)
 
       expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - different number of entries')
     end
@@ -483,7 +483,7 @@ RSpec.describe RegistersClient::RegisterClient do
           "total-entries" => 7,
           "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
       }
-      allow(client).to receive(:get_register_proof).with('https://country.test.openregister.org').and_return(reloaded_register_proof)
+      allow(client).to receive(:get_register_proof).and_return(reloaded_register_proof)
 
       expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match')
     end
@@ -499,9 +499,9 @@ RSpec.describe RegistersClient::RegisterClient do
     @page_size = 100
     @data_store = RegistersClient::InMemoryDataStore.new(@config_options)
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 0).and_return(rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 7).and_return(update_rsf)
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with("country", "test", 9).and_return(no_new_updates_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(7).and_return(update_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(9).and_return(no_new_updates_rsf)
 
     register_proof_for_country_rsf = {
         "total-entries" => 7,
