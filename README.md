@@ -2,7 +2,7 @@
 
 You can use this Ruby client to integrate your service with [GOV.UK Registers](https://registers.cloudapps.digital/).
 
-Registers are lists of information. Each register is the most reliable list of its kind. For example, the Foreign and Commonwealth Office’s (FCO’s) [country register](https://country.register.gov.uk/) is the most accurate and up-to-date list of countries available.
+Registers are authoritative lists of information, and the data is owned by 'custodians' inside departments and services. For example, the [country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office’s (FCO). 
 
 ## Installation
 In your Gemfile add:
