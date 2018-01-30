@@ -1,6 +1,8 @@
 # GOV.UK Registers Ruby Client
 
-You can use this Ruby client to integrate your service with GOV.UK Registers. 
+You can use this Ruby client to integrate your service with [GOV.UK Registers](https://registers.cloudapps.digital/).
+
+Registers are authoritative lists of information, and the data is owned by 'custodians' inside departments and services. For example, the [country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office’s (FCO). 
 
 ## Installation
 In your Gemfile add:
