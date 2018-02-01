@@ -59,6 +59,8 @@ A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f
 
 ## Items, entries and records
 
+Items, entries and records are all collections. All of the methods in [Collections](#collections) apply to them. 
+
 ### Item
 
 #### `hash`
@@ -479,6 +481,8 @@ ull}}]],
 </details>
 
 ## `RegisterClient`
+
+`RegisterClient` is an object that responds to several methods. 
 
 _Note: All examples use the `country` register._
 
