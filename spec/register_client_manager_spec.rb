@@ -9,7 +9,7 @@ RSpec.describe RegistersClient::RegisterClientManager do
 
     it 'should create and return a new register client for the given register when one does not currently exist' do
       client_manager = RegistersClient::RegisterClientManager.new(@config_options)
-      expect(client_manager).to receive(:create_register_client).with('https://country.test.openregister.org', @country_test_data_store, @page_size).once { @country_test_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://country.test.openregister.org'), @country_test_data_store, @page_size).once { @country_test_register_client }
 
       register_client = client_manager.get_register("country", "test", @country_test_data_store)
 
@@ -18,7 +18,7 @@ RSpec.describe RegistersClient::RegisterClientManager do
 
     it 'should return the cached register client when one already exists for the given parameters' do
       client_manager = RegistersClient::RegisterClientManager.new(@config_options)
-      expect(client_manager).to receive(:create_register_client).with('https://country.test.openregister.org', @country_test_data_store, @page_size).once { @country_test_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://country.test.openregister.org'), @country_test_data_store, @page_size).once { @country_test_register_client }
 
       register_client = client_manager.get_register("country", "test", @country_test_data_store)
       cached_register_client = client_manager.get_register("country", "test", @country_beta_data_store)
@@ -29,8 +29,8 @@ RSpec.describe RegistersClient::RegisterClientManager do
 
     it 'should create multiple register clients when the given register is in multiple environments' do
       client_manager = RegistersClient::RegisterClientManager.new(@config_options)
-      expect(client_manager).to receive(:create_register_client).with('https://country.test.openregister.org', @country_test_data_store, @page_size).once { @country_test_register_client }
-      expect(client_manager).to receive(:create_register_client).with('https://country.register.gov.uk', @country_beta_data_store, @page_size).once { @country_beta_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://country.test.openregister.org'), @country_test_data_store, @page_size).once { @country_test_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://country.register.gov.uk'), @country_beta_data_store, @page_size).once { @country_beta_register_client }
 
       test_register_client = client_manager.get_register("country", "test", @country_test_data_store)
       beta_register_client = client_manager.get_register("country", "beta", @country_beta_data_store)
@@ -41,8 +41,8 @@ RSpec.describe RegistersClient::RegisterClientManager do
 
     it 'should create multiple register clients for different registers in the same environment' do
       client_manager = RegistersClient::RegisterClientManager.new(@config_options)
-      expect(client_manager).to receive(:create_register_client).with('https://country.test.openregister.org', @country_test_data_store, @page_size).once { @country_test_register_client }
-      expect(client_manager).to receive(:create_register_client).with('https://field.test.openregister.org', @field_data_store, @page_size).once { @field_test_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://country.test.openregister.org'), @country_test_data_store, @page_size).once { @country_test_register_client }
+      expect(client_manager).to receive(:create_register_client).with(URI.parse('https://field.test.openregister.org'), @field_data_store, @page_size).once { @field_test_register_client }
 
       country_test_register_client = client_manager.get_register("country", "test", @country_test_data_store)
       field_test_register_client = client_manager.get_register("field", "test", @field_data_store)
@@ -80,9 +80,9 @@ RSpec.describe RegistersClient::RegisterClientManager do
       client_manager = RegistersClient::RegisterClientManager.new(@config_options)
       allow_any_instance_of(RegistersClient::RegisterClient).to receive(:refresh_data).and_return(nil)
 
-      expect(client_manager.get_register("country", "beta", nil).instance_variable_get(:@register_url)).to eq('https://country.register.gov.uk')
-      expect(client_manager.get_register("territory", "alpha", nil).instance_variable_get(:@register_url)).to eq('https://territory.alpha.openregister.org')
-      expect(client_manager.get_register("vehicle", "discovery", nil).instance_variable_get(:@register_url)).to eq('https://vehicle.cloudapps.digital')
+      expect(client_manager.get_register("country", "beta", nil).instance_variable_get(:@register_url)).to eq(URI.parse('https://country.register.gov.uk'))
+      expect(client_manager.get_register("territory", "alpha", nil).instance_variable_get(:@register_url)).to eq(URI.parse('https://territory.alpha.openregister.org'))
+      expect(client_manager.get_register("vehicle", "discovery", nil).instance_variable_get(:@register_url)).to eq(URI.parse('https://vehicle.cloudapps.digital'))
     end
   end
 
@@ -114,8 +114,8 @@ RSpec.describe RegistersClient::RegisterClientManager do
     stub_request(:get, "https://country.register.gov.uk/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
     stub_request(:get, "https://country.test.openregister.org/proof/register/merkle:sha-256").to_return(status: 200, body: register_proof_for_country_rsf.to_json)
 
-    @field_test_register_client = RegistersClient::RegisterClient.new('https://field.test.openregister.org', @field_data_store, @page_size)
-    @country_test_register_client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @country_test_data_store, @page_size)
-    @country_beta_register_client = RegistersClient::RegisterClient.new('https://country.register.gov.uk', @country_beta_data_store, @page_size)
+    @field_test_register_client = RegistersClient::RegisterClient.new(URI.parse('https://field.test.openregister.org'), @field_data_store, @page_size)
+    @country_test_register_client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @country_test_data_store, @page_size)
+    @country_beta_register_client = RegistersClient::RegisterClient.new(URI.parse('https://country.register.gov.uk'), @country_beta_data_store, @page_size)
   end
 end

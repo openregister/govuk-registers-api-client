@@ -9,7 +9,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the user item for the given item hash when it exists' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       item = client.get_item('sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720')
 
@@ -17,7 +17,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get nil for the user item, for the given item hash when it does not exist' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       item = client.get_item('sha-256:abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz')
 
@@ -31,7 +31,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get all items' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       items = client.get_items
 
@@ -45,7 +45,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the user entry for the given entry number when it exists' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       entry = client.get_entry(7)
 
@@ -54,7 +54,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get nil for the user entry, for the given entry number when it does not exist' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       entry = client.get_entry(8)
 
@@ -78,7 +78,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the all user entries' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       actual_entries = client.get_entries
 
@@ -88,7 +88,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should pass the correct page size to the EntryCollection' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, 2)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, 2)
 
       entries = client.get_entries
 
@@ -96,7 +96,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get a subset of entries when a start entry number is specified' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       actual_entries = client.get_entries(4)
 
@@ -112,7 +112,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the user record for the given key when it exists' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       record = client.get_record('CZ')
 
@@ -122,7 +122,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get nil for the user record, for the given key when it does not exist' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       record = client.get_record('XYZ')
 
@@ -163,7 +163,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get all the user records' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       records = client.get_records
 
@@ -174,7 +174,7 @@ RSpec.describe RegistersClient::RegisterClient do
 
     it 'should pass the correct page size to the RecordCollection' do
       data_store = RegistersClient::InMemoryDataStore.new({ page_size: 2 })
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', data_store, 2)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), data_store, 2)
 
       records = client.get_records
 
@@ -188,7 +188,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get records with history' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       records_with_history = client.get_records_with_history
 
@@ -199,7 +199,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get a subset of records with history when a start entry number is specified' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       records_with_history = client.get_records_with_history(3)
 
@@ -256,7 +256,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get all the metadata records' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       records = client.get_metadata_records
 
@@ -272,7 +272,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get metadata records with history' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       metadata_records_with_history = client.get_metadata_records_with_history
 
@@ -283,7 +283,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get a subset of metadata records with history when a start entry number is specified' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       metadata_records_with_history = client.get_metadata_records_with_history(9)
 
@@ -328,7 +328,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the current field definitions' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       records = client.get_field_definitions
 
@@ -338,7 +338,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should order fields as specified in the register definition' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       fields = client.get_field_definitions.map { |field| field.item.value['field'] }
       register_definition = client.get_register_definition
@@ -350,7 +350,7 @@ RSpec.describe RegistersClient::RegisterClient do
 
   describe 'get_register_definition' do
     before(:each) do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       expected_item = RegistersClient::Item.new("add-item\t{\"fields\":[\"country\",\"name\",\"official-name\",\"citizen-names\",\"start-date\",\"end-date\"],\"phase\":\"beta\",\"register\":\"country\",\"registry\":\"foreign-commonwealth-office\",\"text\":\"British English-language names and descriptive terms for countries\"}")
 
       record = client.get_register_definition
@@ -367,7 +367,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the correct custodian when the custodian has been updated' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       expected_custodian = RegistersClient::Item.new("add-item\t{\"custodian\":\"Joe Bloggs\"}")
       expected_updated_custodian = RegistersClient::Item.new("add-item\t{\"custodian\":\"Joseph Bloggs\"}")
 
@@ -391,7 +391,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the current records' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       records = client.get_current_records
 
       expect(records.count).to eq(4)
@@ -405,7 +405,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the expired records' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       records = client.get_expired_records
 
       expect(records.count).to eq(2)
@@ -419,7 +419,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should update the downloaded register data' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       records = client.get_records
       entries = client.get_entries
 
@@ -435,7 +435,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should keep the existing register data when no new updates exist' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       client.refresh_data
       records = client.get_records
       entries = client.get_entries
@@ -458,14 +458,14 @@ RSpec.describe RegistersClient::RegisterClient do
       allow(data_store).to receive(:after_load)
       allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(@register_proof_for_country_update_rsf)
 
-      RegistersClient::RegisterClient.new('https://country.test.openregister.org', data_store, @page_size)
+      RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), data_store, @page_size)
 
       expect(data_store).to have_received(:get_latest_entry_number).with(:user)
       expect(data_store).to have_received(:get_latest_entry_number).with(:system)
     end
 
     it 'should throw an InvalidRegisterError when there are less entries in the register than there are in memory' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       reloaded_register_proof = {
           "total-entries" => 4,
@@ -477,7 +477,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should throw an InvalidRegisterError when the latest root hash from the downloaded RSF file does not match the register proof' do
-      client = RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, @page_size)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
       reloaded_register_proof = {
           "total-entries" => 7,

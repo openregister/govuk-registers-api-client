@@ -15,7 +15,7 @@ module RegistersClient
       end
 
       def get_register_from_environment(register, environment_url, data_store = nil) 
-        key = register + ':' + environment_url
+        key = register + ':' + environment_url.to_s
 
         if !@register_clients.key?(key)
           if (data_store.nil?)
@@ -43,17 +43,17 @@ module RegistersClient
       end
 
       def get_register_url(register, environment_url)
-        environment_url.sub('register', register)
+        URI.parse(environment_url.to_s.sub('register', register))
       end
 
       def get_environment_url_from_phase(phase)
         case phase
         when 'beta'
-          'https://register.register.gov.uk'
+          URI.parse('https://register.register.gov.uk')
         when 'discovery'
-          'https://register.cloudapps.digital'
+          URI.parse('https://register.cloudapps.digital')
         when 'alpha', 'test'
-          "https://register.#{phase}.openregister.org"
+          URI.parse("https://register.#{phase}.openregister.org")
         else
           raise ArgumentError "Invalid phase '#{phase}'. Must be one of 'beta', 'alpha', 'discovery', 'test'."
         end

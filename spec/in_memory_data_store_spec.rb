@@ -274,6 +274,6 @@ RSpec.describe RegistersClient::InMemoryDataStore do
     @data_store = RegistersClient::InMemoryDataStore.new(@config_options)
 
     # Run the RSF through the data store
-    RegistersClient::RegisterClient.new('https://country.test.openregister.org', @data_store, 2)
+    RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, 2)
   end
 end

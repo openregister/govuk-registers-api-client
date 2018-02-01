@@ -109,7 +109,7 @@ module RegistersClient
     end
 
     def get_register_proof
-      @register_proof = JSON.parse(RestClient.get(@register_url + "/proof/register/merkle:sha-256"))
+      @register_proof = JSON.parse(register_http_request('proof/register/merkle:sha-256'))
     end
 
     def validate_register_integrity(rsf, current_entry_number)
@@ -127,7 +127,7 @@ module RegistersClient
     end
 
     def download_rsf(start_entry_number)
-      RestClient.get(@register_url + "/download-rsf/#{start_entry_number}")
+      register_http_request("download-rsf/#{start_entry_number}")
     end
 
     def update_data_from_rsf(rsf, user_entry_number, data_store)
@@ -156,6 +156,10 @@ module RegistersClient
       end
 
       data_store.after_load
+    end
+
+    def register_http_request(path)
+      RestClient.get(@register_url.merge(path).to_s)
     end
   end
 end
