@@ -4,6 +4,14 @@ You can use this Ruby client to integrate your service with [GOV.UK Registers](h
 
 Registers are authoritative lists of information, and the data is owned by 'custodians' inside departments and services. For example, the [country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Getting started](#getting-started)
+* [Items, entries and records](#items-entries-and-records)
+* [Collections](#collections)
+* [`RegisterClient`](#registerclient) 
+
 ## Installation
 In your Gemfile add:
 ```
