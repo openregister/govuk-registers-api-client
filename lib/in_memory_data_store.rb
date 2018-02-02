@@ -80,7 +80,8 @@ module RegistersClient
     end
 
     def get_latest_entry_number(entry_type)
-      entry = @data[:entries][entry_type].last
+      entries = @data[:entries][entry_type]
+      entry = entries.any? ? entries.last : nil
       entry.nil? ? 0 : entry.entry_number
     end
 
