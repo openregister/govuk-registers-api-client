@@ -451,6 +451,19 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(entries.count).to eq(9)
     end
 
+    it 'should get the current user entry number from the datastore before refreshing data' do
+      data_store = instance_double("InMemoryDataStore")
+      allow(data_store).to receive(:get_latest_entry_number).with(:user).and_return(9)
+      allow(data_store).to receive(:get_latest_entry_number).with(:system).and_return(13)
+      allow(data_store).to receive(:after_load)
+      allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(@register_proof_for_country_update_rsf)
+
+      RegistersClient::RegisterClient.new("country", "test", data_store, @page_size)
+
+      expect(data_store).to have_received(:get_latest_entry_number).with(:user)
+      expect(data_store).to have_received(:get_latest_entry_number).with(:system)
+    end
+
     it 'should throw an InvalidRegisterError when there are less entries in the register than there are in memory' do
       client = RegistersClient::RegisterClient.new("country", "test", @data_store, @page_size)
 
@@ -495,11 +508,11 @@ RSpec.describe RegistersClient::RegisterClient do
         "root-hash" => 'sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d'
     }
 
-    register_proof_for_country_update_rsf = {
+    @register_proof_for_country_update_rsf = {
         "total-entries" => 9,
         "root-hash" => 'sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb'
     }
 
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(register_proof_for_country_rsf, register_proof_for_country_update_rsf)
+    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).with("country", "test").and_return(register_proof_for_country_rsf, @register_proof_for_country_update_rsf)
   end
 end

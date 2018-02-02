@@ -10,9 +10,6 @@ module RegistersClient
       @data_store = data_store
       @page_size = page_size
 
-      @user_entry_number = 0
-      @system_entry_number = 0
-
       refresh_data
     end
 
@@ -80,10 +77,11 @@ module RegistersClient
     end
 
     def refresh_data
-      rsf = download_rsf(@register, @phase, @user_entry_number)
+      user_entry_number = @data_store.get_latest_entry_number(:user)
+      rsf = download_rsf(@register, @phase, user_entry_number)
 
-      validate_register_integrity(rsf, @user_entry_number)
-      update_data_from_rsf(rsf, @data_store)
+      validate_register_integrity(rsf, user_entry_number)
+      update_data_from_rsf(rsf, user_entry_number, @data_store)
     end
 
     private
@@ -133,7 +131,9 @@ module RegistersClient
       RestClient.get("https://#{register}.#{phase}.openregister.org/download-rsf/#{start_entry_number}")
     end
 
-    def update_data_from_rsf(rsf, data_store)
+    def update_data_from_rsf(rsf, user_entry_number, data_store)
+      system_entry_number = @data_store.get_latest_entry_number(:system)
+
       rsf.each_line do |line|
         line.slice!("\n")
         params = line.split("\t")
@@ -143,13 +143,13 @@ module RegistersClient
           data_store.add_item(RegistersClient::Item.new(line))
         elsif command == 'append-entry'
           if params[1] == 'user'
-            @user_entry_number += 1
+            user_entry_number += 1
 
-            entry = Entry.new(line, @user_entry_number, params[1])
+            entry = Entry.new(line, user_entry_number, params[1])
           else
-            @system_entry_number += 1
+            system_entry_number += 1
 
-            entry = Entry.new(line, @system_entry_number, params[1])
+            entry = Entry.new(line, system_entry_number, params[1])
           end
 
           data_store.append_entry(entry)
