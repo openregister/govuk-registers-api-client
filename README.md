@@ -59,7 +59,7 @@ A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f
 
 ## Items, entries and records
 
-Items, entries and records are all collections. All of the methods in [Collections](#collections) apply to them. 
+> [`ItemCollection`](path/to/item_collection.rb), [`EntryCollection`](path/to/entry_collection.rb) and [`RecordCollection`](path/to/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
 
 ### Item
 
@@ -481,8 +481,6 @@ ull}}]],
 </details>
 
 ## `RegisterClient`
-
-`RegisterClient` is an object that responds to several methods. 
 
 _Note: All examples use the `country` register._
 
