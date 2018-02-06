@@ -67,6 +67,8 @@ A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f
 
 ## Items, entries and records
 
+> [`ItemCollection`](path/to/item_collection.rb), [`EntryCollection`](path/to/entry_collection.rb) and [`RecordCollection`](path/to/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+
 ### Item
 
 #### `hash`
