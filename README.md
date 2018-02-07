@@ -30,7 +30,7 @@ registers_client = RegistersClient::RegisterClientManager.new({
 })
 ```
 
-The `RegisterClientManager` will maintain an invidual instance of `RegisterClient` each time you access a register by calling [`get_register`](#getregister).
+The `RegisterClientManager` maintains an invidual instance of [`RegisterClient`](#registerclient) for each time you access a register by calling [`get_register`](#getregister).
 
 `get_register` is the only public method available on `RegisterClientManager`.
 
@@ -490,7 +490,7 @@ ull}}]],
 ```
 </details>
 
-## `RegisterClient`
+## <a name="registerclient"></a>`RegisterClient`
 
 _Note: All examples use the `country` register._
 
