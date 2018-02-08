@@ -490,7 +490,7 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient">`RegisterClient`
+## <a id="registerclient"></a>`RegisterClient`
 
 _Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
