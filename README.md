@@ -30,15 +30,13 @@ registers_client = RegistersClient::RegisterClientManager.new({
 })
 ```
 
-The `RegisterClientManager` maintains an invidual instance of [`RegisterClient`](#registerclient) for each time you access a register by calling [`get_register`](#getregister).
-
-`get_register` is the only public method available on `RegisterClientManager`.
+_The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method_
 
 When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
 - `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
 - `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
-### <a name="getregister"></a>`get_register(register, phase, data_store = nil)`
+### <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
@@ -490,7 +488,7 @@ ull}}]],
 ```
 </details>
 
-## <a name="registerclient"></a>`RegisterClient`
+## <a id="registerclient"></a>`RegisterClient`
 
 _Note: All examples use the `country` register._
 
