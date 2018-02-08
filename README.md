@@ -38,7 +38,7 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 - `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
 - `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
-## <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
+### <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
@@ -490,7 +490,7 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient"></a><code style="background: transparent">...</code>`RegisterClient`
+## <a id="registerclient">`RegisterClient`
 
 _Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
