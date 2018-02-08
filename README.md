@@ -2,7 +2,7 @@
 
 You can use this Ruby client to integrate your service with [GOV.UK Registers](https://registers.cloudapps.digital/).
 
-Registers are authoritative lists of information, and the data is owned by [custodians](https://www.gov.uk/government/collections/registers-guidance#creating-and-managing-registers) inside departments and services. For example, the [Country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
+Registers are authoritative lists of information. The data is owned by [custodians](https://www.gov.uk/government/collections/registers-guidance#creating-and-managing-registers) inside departments and services. For example, the [Country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
 
 ## Table of Contents
 
