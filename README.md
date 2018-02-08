@@ -490,7 +490,7 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient"></a>`RegisterClient`
+## <a id="registerclient"></a>`The RegisterClient class`
 
 _Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
