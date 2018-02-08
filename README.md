@@ -30,7 +30,7 @@ registers_client = RegistersClient::RegisterClientManager.new({
 })
 ```
 
-_The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method_
+The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method. 
 
 When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
 - `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
