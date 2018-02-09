@@ -2,24 +2,26 @@
 
 You can use this Ruby client to integrate your service with [GOV.UK Registers](https://registers.cloudapps.digital/).
 
-Registers are authoritative lists of information, and the data is owned by 'custodians' inside departments and services. For example, the [country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
+Registers are authoritative lists of information. The data is owned by [custodians](https://www.gov.uk/government/collections/registers-guidance#creating-and-managing-registers) inside departments and services. For example, the [Country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
 
 ## Table of Contents
 
 * [Installation](#installation)
-* [Getting started](#getting-started)
+* [Get started](#get-started)
 * [Items, entries and records](#items-entries-and-records)
 * [Collections](#collections)
-* [`RegisterClient`](#registerclient) 
+* [The `RegisterClient` class](#registerclient) 
 
 ## Installation
-In your Gemfile add:
+
+In your Gemfile, add:
 ```
 gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-ruby-client.git'
 ```
-## Getting started 
 
-The `RegisterClientManager` is the entry point of Registers Ruby client. 
+## Get started 
+
+The `RegisterClientManager` is the entry point of Registers Ruby client: 
 
 ```
 require 'register_client_manager'
@@ -44,7 +46,7 @@ The `data_store` parameter specifies the data store to use accessing a particula
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -77,7 +79,7 @@ Returns the SHA-256 hash of the item.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -106,7 +108,7 @@ Returns the key-value pairs represented by the item in a `JSON` object.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -136,7 +138,7 @@ Returns a boolean to describe whether the item contains a key-value pair for the
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -166,7 +168,7 @@ Gets the entry number of the entry.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -194,7 +196,7 @@ Gets the key of the entry.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -221,7 +223,7 @@ Gets the timestamp of when the entry was appended to the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -249,7 +251,7 @@ Gets the SHA-256 hash of the item which the entry points to.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -277,7 +279,7 @@ Returns the entry as a hash.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -307,7 +309,7 @@ Gets the `Entry` object associated with the record.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -335,7 +337,7 @@ Gets the `Item` object associated with the record.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -399,7 +401,7 @@ Yields each record key to list of current and historical `Record` objects in the
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -430,7 +432,7 @@ Returns both the current and historical `Record` objects for a given key, or rai
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -459,7 +461,7 @@ Returns an enumerator of a map of record key to list of current and historical `
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -488,9 +490,9 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient"></a>`RegisterClient`
+## <a id="registerclient"></a>`The RegisterClient class`
 
-_Note: All examples use the `country` register._
+_Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
 ### `get_entries`
 
@@ -498,7 +500,7 @@ Get all entries from the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -527,7 +529,7 @@ Get all records from the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 
@@ -559,7 +561,7 @@ Get all metadata records of the register. This includes the register definition,
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 
@@ -590,7 +592,7 @@ Get definitions for the fields used in the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 
@@ -623,7 +625,7 @@ Get the definition of the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
  </summary>
 
 
@@ -654,7 +656,7 @@ Get the name of the current custodian for the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 
@@ -687,7 +689,7 @@ Get current and previous versions of records in the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -720,7 +722,7 @@ Get all current records from the register.
 
 <details>
 <summary>
-Example usage (click here to expand):
+Example use (click here to expand):
 </summary>
 
 ```
@@ -750,7 +752,7 @@ Get all expired records from the register.
 
 <details>
 <summary>
-Example usage (click here to expand)
+Example use (click here to expand)
 </summary>
 
 ```
