@@ -42,7 +42,7 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
-The `data_store` parameter specifies the data store to use accessing a particular register. By default this parameter can be omitted to use the `InMemoryDataStore`; however, a custom data store can be created (for example, to insert register data directly into your Postgres database) which `includes DataStore` module and implements the methods it defines.
+The `data_store` parameter specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database. 
 
 <details>
 <summary>
@@ -490,7 +490,7 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient"></a>`The RegisterClient class`
+## <a id="registerclient"></a>The `RegisterClient` class
 
 _Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
