@@ -21,7 +21,7 @@ module RegistersClient
         records: { user: {}, system: {} },
         entries: { user: [], system: [] },
         items: {},
-        root_hash: ''
+        root_hash: EMPTY_ROOT_HASH
       }
 
     end
@@ -87,7 +87,7 @@ module RegistersClient
     end
 
     def get_root_hash
-      get_latest_entry_number(:user) > 0 ? @data[:root_hash] : EMPTY_ROOT_HASH
+      @data[:root_hash]
     end
 
     def set_root_hash(root_hash)
