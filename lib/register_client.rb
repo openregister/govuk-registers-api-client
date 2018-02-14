@@ -114,14 +114,10 @@ module RegistersClient
 
     def validate_register_integrity(rsf, current_entry_number)
       rsf_lines = rsf.split("\n")
-      latest_root_hash = rsf_lines[rsf_lines.length - 1].split("\t")[1]
-      register_proof = get_register_proof
+      expected_root_hash = rsf_lines[0].split("\t")[1]
+      local_root_hash = @data_store.get_root_hash
 
-      if (register_proof['total-entries'] < current_entry_number)
-        raise InvalidRegisterError, 'Register has been reloaded with different data - different number of entries'
-      end
-
-      if (register_proof['root-hash'] != latest_root_hash)
+      if (local_root_hash != expected_root_hash)
         raise InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match'
       end
     end
@@ -152,6 +148,9 @@ module RegistersClient
           end
 
           data_store.append_entry(entry)
+        elsif command == 'assert-root-hash'
+          root_hash = line.split("\t")[1]
+          data_store.set_root_hash(root_hash)
         end
       end
 
