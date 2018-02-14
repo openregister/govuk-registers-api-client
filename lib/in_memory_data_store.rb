@@ -21,8 +21,6 @@ module RegistersClient
         records: { user: {}, system: {} },
         entries: { user: [], system: [] },
         items: {},
-        user_entry_number: 0,
-        system_entry_number: 0,
         root_hash: ''
       }
 
