@@ -11,9 +11,7 @@ Registers are authoritative lists of information. The data is owned by [custodia
 - [Reference](#reference)
   * [`RegisterClientManager`](#registerclientmanager)
   * [`RegisterClient`](#registerclient) 
-  * [Collections](#collections)
-    + [Items, entries and records](#items-entries-and-records)
-  
+  * [Collections](#collections)  
 
 ## Installation
 
@@ -368,6 +366,8 @@ Downloads register data. Call this method when you want to refresh data immediat
 
 The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
 
+[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb), [`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb) and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+
 ### EntryCollection
 
 A collection of `Entry` objects.
@@ -495,11 +495,7 @@ ull}}]],
 ```
 </details>
 
-## Items, entries and records
-
-[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb), [`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb) and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
-
-### Item
+### `Item`
 
 #### `hash`
 
@@ -588,7 +584,7 @@ true
 ```
 </details>
 
-### Entry
+### `Entry`
 
 #### `entry_number`
 
@@ -729,7 +725,7 @@ Expected output (click here to expand):
 ```
 </details>
 
-### Record
+### `Record`
 
 #### `entry`
 
