@@ -12,6 +12,7 @@ Registers are authoritative lists of information. The data is owned by [custodia
   * [`RegisterClientManager`](#registerclientmanager)
   * [`RegisterClient`](#registerclient) 
   * [Collections](#collections)  
+  * [`Entry`, `Item` and `Record`](#entry-item-and-record)
 
 ## Installation
 
@@ -366,7 +367,8 @@ Downloads register data. Call this method when you want to refresh data immediat
 
 The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
 
-[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb), [`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb) and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+[`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb),
+[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb)  and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
 
 ### `EntryCollection`
 
@@ -495,94 +497,7 @@ ull}}]],
 ```
 </details>
 
-### `Item`
-
-#### `hash`
-
-Returns the SHA-256 hash of the item.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.hash
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-
-"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"
-
-```
-</details>
-
-#### `value`
-
-Returns the key-value pairs represented by the item in a `JSON` object.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.value
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-
-{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}
-
-```
-</details>
-
-#### `has_end_date`
-
-Returns a boolean to describe whether the item contains a key-value pair for the `end-date` field.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.has_end_date
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-true
-```
-</details>
+## <a id="entry-item-and-record"></a>`Entry`, `Item` and `Record`
 
 ### `Entry`
 
@@ -722,6 +637,95 @@ Expected output (click here to expand):
 
 ```
 "{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
+```
+</details>
+
+### `Item`
+
+#### `hash`
+
+Returns the SHA-256 hash of the item.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"
+
+```
+</details>
+
+#### `value`
+
+Returns the key-value pairs represented by the item in a `JSON` object.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.value
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}
+
+```
+</details>
+
+#### `has_end_date`
+
+Returns a boolean to describe whether the item contains a key-value pair for the `end-date` field.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.has_end_date
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+true
 ```
 </details>
 
