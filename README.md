@@ -368,7 +368,7 @@ The majority of the methods available in the `RegisterClient` return one of thre
 
 [`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb), [`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb) and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
 
-### EntryCollection
+### `EntryCollection`
 
 A collection of `Entry` objects.
 
@@ -382,7 +382,7 @@ Returns all `Entry` objects in the collection, according to the specified `page`
 
 If there are fewer results than the current `page_size`, all results are returned.
 
-### RecordCollection
+### `RecordCollection`
 
 A collection of `Record` objects.
 
@@ -396,7 +396,7 @@ Returns `Record` objects in the collection, according to the specified `page` nu
 
 If there are fewer results than the current `page_size`, all results are returned.
 
-### RecordMapCollection
+### `RecordMapCollection`
 
 A map of record key to list of both the current and historical `Record` objects for each key.
 
