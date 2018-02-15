@@ -12,7 +12,6 @@ Registers are authoritative lists of information. The data is owned by [custodia
   * [`RegisterClientManager`](#registerclientmanager)
   * [`RegisterClient`](#registerclient) 
   * [Collections](#collections)  
-  * [`Entry`, `Item` and `Record`](#entry-item-and-record)
 
 ## Installation
 
@@ -384,6 +383,147 @@ Returns all `Entry` objects in the collection, according to the specified `page`
 
 If there are fewer results than the current `page_size`, all results are returned.
 
+### `Entry`
+
+#### `entry_number`
+
+Gets the entry number of the entry.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.entry_number
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+52
+```
+</details>
+
+##### `key`
+
+Gets the key of the entry.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.key
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+CZ
+```
+</details>
+
+##### `timestamp`
+
+Gets the timestamp of when the entry was appended to the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.timestamp
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+2016-04-05T13:23:05Z
+```
+</details>
+
+##### `item_hash`
+
+Gets the SHA-256 hash of the item which the entry points to.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.item_hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed
+```
+</details>
+
+##### `value`
+
+Returns the entry as a hash.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.value.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
+```
+</details>
+
 ### `RecordCollection`
 
 A collection of `Record` objects.
@@ -397,6 +537,65 @@ Yields each `Record` object in the collection.
 Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`).
 
 If there are fewer results than the current `page_size`, all results are returned.
+
+### `Record`
+
+#### `entry`
+
+Gets the `Entry` object associated with the record.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
+record.entry.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"entry_number":205,"parsed_entry":{"key":"CZ","timestamp":"2016-11-11T16:25:07Z","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720"}}"
+```
+</details>
+
+#### `item`
+
+Gets the `Item` object associated with the record.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
+record.item.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"item_json":"{\"citizen-names\":\"Czech\",\"country\":\"CZ\",\"name\":\"Czechia\",\"official-name\":\"The Czech Republic\",\"start-date\":\"1993-01-01\"}","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720","parsed_item":null}"
+```
+</details>
+
 
 ### `RecordMapCollection`
 
@@ -497,149 +696,6 @@ ull}}]],
 ```
 </details>
 
-## <a id="entry-item-and-record"></a>`Entry`, `Item` and `Record`
-
-### `Entry`
-
-#### `entry_number`
-
-Gets the entry number of the entry.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.entry_number
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-52
-```
-</details>
-
-#### `key`
-
-Gets the key of the entry.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.key
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-CZ
-```
-</details>
-
-#### `timestamp`
-
-Gets the timestamp of when the entry was appended to the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.timestamp
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-2016-04-05T13:23:05Z
-```
-</details>
-
-#### `item_hash`
-
-Gets the SHA-256 hash of the item which the entry points to.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.item_hash
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed
-```
-</details>
-
-#### `value`
-
-Returns the entry as a hash.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.value.to_json
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-"{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
-```
-</details>
-
 ### `Item`
 
 #### `hash`
@@ -729,60 +785,3 @@ true
 ```
 </details>
 
-### `Record`
-
-#### `entry`
-
-Gets the `Entry` object associated with the record.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
-record.entry.to_json
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-"{"entry_number":205,"parsed_entry":{"key":"CZ","timestamp":"2016-11-11T16:25:07Z","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720"}}"
-```
-</details>
-
-#### `item`
-
-Gets the `Item` object associated with the record.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-record = register_data.get_records.select {|record| record.entry.key == 'CZ'}.first
-record.item.to_json
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-"{"item_json":"{\"citizen-names\":\"Czech\",\"country\":\"CZ\",\"name\":\"Czechia\",\"official-name\":\"The Czech Republic\",\"start-date\":\"1993-01-01\"}","item_hash":"sha-256:c69c04fff98c59aabd739d43018e87a25fd51a00c37d100721cc68fa9003a720","parsed_item":null}"
-```
-</details>
