@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'json'
 require 'exceptions/invalid_register_error'
+require 'exceptions/invalid_hash_value_error'
 
 module RegistersClient
   class RegisterClient
@@ -73,6 +74,14 @@ module RegistersClient
 
     def get_expired_records
       RecordCollection.new(get_records.select { |record| record.item.has_end_date }, @page_size)
+    end
+
+    def get_root_hash
+      root_hash = @data_store.get_root_hash
+      if !is_valid_hash_value(root_hash)
+        raise InvalidHashValueError
+      end
+      return root_hash
     end
 
     def refresh_data
@@ -159,6 +168,10 @@ module RegistersClient
 
     def register_http_request(path)
       RestClient.get(@register_url.merge(path).to_s)
+    end
+
+    def is_valid_hash_value(hash_value)
+      (/sha-256:+\h{64}/) === hash_value
     end
   end
 end

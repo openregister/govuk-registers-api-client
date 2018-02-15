@@ -476,6 +476,35 @@ RSpec.describe RegistersClient::RegisterClient do
     end
   end
 
+  describe 'get_root_hash' do
+    before(:each) do
+      setup
+    end
+
+    it 'should throw error for invalid root hash' do
+      data_store = instance_double("InMemoryDataStore")
+      allow(data_store).to receive(:get_latest_entry_number).with(:user).and_return(9)
+      allow(data_store).to receive(:get_latest_entry_number).with(:system).and_return(13)
+      allow(data_store).to receive(:set_root_hash).with('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      allow(data_store).to receive(:after_load)
+
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), data_store, @page_size)
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect(client.get_root_hash).to eq('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+
+      allow(data_store).to receive(:get_root_hash).and_return('fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db8-----a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
+    end
+  end
+
   def setup(config_options = {})
     dir = File.dirname(__FILE__)
     rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
