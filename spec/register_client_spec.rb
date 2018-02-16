@@ -455,8 +455,9 @@ RSpec.describe RegistersClient::RegisterClient do
       data_store = instance_double("InMemoryDataStore")
       allow(data_store).to receive(:get_latest_entry_number).with(:user).and_return(9)
       allow(data_store).to receive(:get_latest_entry_number).with(:system).and_return(13)
+      allow(data_store).to receive(:set_root_hash).with('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
       allow(data_store).to receive(:after_load)
-      allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(@register_proof_for_country_update_rsf)
 
       RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), data_store, @page_size)
 
@@ -464,28 +465,43 @@ RSpec.describe RegistersClient::RegisterClient do
       expect(data_store).to have_received(:get_latest_entry_number).with(:system)
     end
 
-    it 'should throw an InvalidRegisterError when there are less entries in the register than there are in memory' do
+    it 'should throw an InvalidRegisterError when the expected current root hash from the downloaded RSF file does not match the local root hash' do
       client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
 
-      reloaded_register_proof = {
-          "total-entries" => 4,
-          "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
-      }
-      allow(client).to receive(:get_register_proof).and_return(reloaded_register_proof)
-
-      expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - different number of entries')
-    end
-
-    it 'should throw an InvalidRegisterError when the latest root hash from the downloaded RSF file does not match the register proof' do
-      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
-
-      reloaded_register_proof = {
-          "total-entries" => 7,
-          "root-hash" => 'sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17'
-      }
-      allow(client).to receive(:get_register_proof).and_return(reloaded_register_proof)
+      dir = File.dirname(__FILE__)
+      reload_rsf = File.read(File.join(dir, 'fixtures/country_register_reload.rsf'))
+      allow(client).to receive(:download_rsf).with(7).and_return(reload_rsf)
 
       expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match')
+    end
+  end
+
+  describe 'get_root_hash' do
+    before(:each) do
+      setup
+    end
+
+    it 'should throw error for invalid root hash' do
+      data_store = instance_double("InMemoryDataStore")
+      allow(data_store).to receive(:get_latest_entry_number).with(:user).and_return(9)
+      allow(data_store).to receive(:get_latest_entry_number).with(:system).and_return(13)
+      allow(data_store).to receive(:set_root_hash).with('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      allow(data_store).to receive(:after_load)
+
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), data_store, @page_size)
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect(client.get_root_hash).to eq('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+
+      allow(data_store).to receive(:get_root_hash).and_return('fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
+
+      allow(data_store).to receive(:get_root_hash).and_return('sha-256:fa87bc961ed7fa6dde75db8-----a6df8d8427da36bbf448fff6b177c2486cdb')
+      expect{client.get_root_hash}.to raise_error(InvalidHashValueError, 'Value must be a sha-256 hash string prefixed with "sha-256:"')
     end
   end
 
@@ -502,17 +518,5 @@ RSpec.describe RegistersClient::RegisterClient do
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf)
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(7).and_return(update_rsf)
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(9).and_return(no_new_updates_rsf)
-
-    register_proof_for_country_rsf = {
-        "total-entries" => 7,
-        "root-hash" => 'sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d'
-    }
-
-    @register_proof_for_country_update_rsf = {
-        "total-entries" => 9,
-        "root-hash" => 'sha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb'
-    }
-
-    allow_any_instance_of(RegistersClient::RegisterClient).to receive(:get_register_proof).and_return(register_proof_for_country_rsf, @register_proof_for_country_update_rsf)
   end
 end

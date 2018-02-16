@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'json'
 require 'exceptions/invalid_register_error'
+require 'exceptions/invalid_hash_value_error'
 
 module RegistersClient
   class RegisterClient
@@ -75,6 +76,14 @@ module RegistersClient
       RecordCollection.new(get_records.select { |record| record.item.has_end_date }, @page_size)
     end
 
+    def get_root_hash
+      root_hash = @data_store.get_root_hash
+      if !is_valid_hash_value(root_hash)
+        raise InvalidHashValueError
+      end
+      return root_hash
+    end
+
     def refresh_data
       user_entry_number = @data_store.get_latest_entry_number(:user)
       rsf = download_rsf(user_entry_number)
@@ -114,14 +123,10 @@ module RegistersClient
 
     def validate_register_integrity(rsf, current_entry_number)
       rsf_lines = rsf.split("\n")
-      latest_root_hash = rsf_lines[rsf_lines.length - 1].split("\t")[1]
-      register_proof = get_register_proof
+      expected_root_hash = rsf_lines[0].split("\t")[1]
+      local_root_hash = @data_store.get_root_hash
 
-      if (register_proof['total-entries'] < current_entry_number)
-        raise InvalidRegisterError, 'Register has been reloaded with different data - different number of entries'
-      end
-
-      if (register_proof['root-hash'] != latest_root_hash)
+      if (local_root_hash != expected_root_hash)
         raise InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match'
       end
     end
@@ -152,6 +157,9 @@ module RegistersClient
           end
 
           data_store.append_entry(entry)
+        elsif command == 'assert-root-hash'
+          root_hash = line.split("\t")[1]
+          data_store.set_root_hash(root_hash)
         end
       end
 
@@ -160,6 +168,10 @@ module RegistersClient
 
     def register_http_request(path)
       RestClient.get(@register_url.merge(path).to_s)
+    end
+
+    def is_valid_hash_value(hash_value)
+      (/sha-256:+\h{64}/) === hash_value
     end
   end
 end

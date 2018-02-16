@@ -12,6 +12,8 @@ module RegistersClient
   class InMemoryDataStore
     include DataStore
 
+    EMPTY_ROOT_HASH = 'sha-256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+
     def initialize(config_options)
       @config_options = config_options
 
@@ -19,8 +21,7 @@ module RegistersClient
         records: { user: {}, system: {} },
         entries: { user: [], system: [] },
         items: {},
-        user_entry_number: 0,
-        system_entry_number: 0
+        root_hash: EMPTY_ROOT_HASH
       }
 
     end
@@ -83,6 +84,14 @@ module RegistersClient
       entries = @data[:entries][entry_type]
       entry = entries.any? ? entries.last : nil
       entry.nil? ? 0 : entry.entry_number
+    end
+
+    def get_root_hash
+      @data[:root_hash]
+    end
+
+    def set_root_hash(root_hash)
+      @data[:root_hash] = root_hash
     end
 
     def after_load
