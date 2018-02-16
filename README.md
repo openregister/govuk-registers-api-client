@@ -6,11 +6,19 @@ Registers are authoritative lists of information. The data is owned by [custodia
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Get started](#get-started)
-* [Items, entries and records](#items-entries-and-records)
-* [Collections](#collections)
-* [The `RegisterClient` class](#registerclient) 
+- [Installation](#installation)
+- [Get started](#get-started)
+- [Reference](#reference)
+  * [`RegisterClientManager`](#registerclientmanager)
+  * [`RegisterClient`](#registerclient) 
+  * [Collections](#collections) 
+    + [EntryCollection](#entrycollection)
+    + [Entry](#entry)
+    + [ItemCollection](#itemcollection)
+    + [Item](#item)
+    + [RecordCollection](#recordcollection)
+    + [Record](#record) 
+    + [RecordMapCollection](#recordmapcollection) 
 
 ## Installation
 
@@ -38,7 +46,11 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 - `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
 - `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
-### <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
+## Reference
+
+### <a id="registerclientmanager"></a>`RegisterClientManager`
+
+##### <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
@@ -67,11 +79,473 @@ A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f
 ```
 </details>
 
-## Items, entries and records
+### <a id="registerclient"></a>`RegisterClient` 
 
-[`ItemCollection`](path/to/item_collection.rb), [`EntryCollection`](path/to/entry_collection.rb) and [`RecordCollection`](path/to/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+_Note: All examples use the [Country register](https://country.register.gov.uk/)._
 
-### Item
+#### `get_entries`
+
+Get all entries from the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_entries.first.item_hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+sha-256:a074752a77011b18447401652029a9129c53b4ee35e1d99e6dec8b42ff4a0103
+
+```
+</details>
+
+#### `get_records`
+
+Get all records from the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_records.first.item.value
+
+```
+</details>
+<details>
+
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+
+```
+
+</details>
+
+#### `get_metadata_records`
+
+Get all metadata records of the register. This includes the register definition, field definitions and custodian.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_metadata_records.first.item.value
+
+```
+</details>
+<details>
+
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"name"=>"country"}
+
+```
+</details>
+
+#### `get_field_definitions`
+
+Get definitions for the fields used in the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_field_definitions.first.item.value
+
+```
+
+</details>
+<details>
+
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"cardinality"=>"1", "datatype"=>"string", "field"=>"country", "phase"=>"beta", "register"=>"country", "text"=>"The country's 2-letter ISO 3166-2 alpha2 code."}
+
+```
+
+</details>
+
+#### `get_register_definition`
+
+Get the definition of the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+ </summary>
+
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_register_definition.item.value
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}
+
+```
+
+</details>
+
+#### `get_custodian`
+
+Get the name of the current custodian for the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_custodian.item.value['custodian']
+
+```
+
+</details>
+<details>
+
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+David de Silva
+
+```
+
+</details>
+
+#### `get_records_with_history`
+
+Get current and previous versions of records in the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+germany = register_data.get_records_with_history.get_records_for_key('DE').first
+puts germany.to_json
+
+```
+
+</details>
+
+<details>
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"key":"DE","records":[{"key":"DE","entry_number":234,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","item":{"citizen-names":"West German","country":"DE","end-date":"1990-10-02","name":"West Germany","official-name":"Federal Republic of Germany"}}
+
+```
+
+</details>
+
+#### `get_current_records`
+
+Get all current records from the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_current_records.first.item
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+</summary>
+
+```
+
+{"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
+
+```
+
+</details>
+
+#### `get_expired_records`
+
+Get all expired records from the register.
+
+<details>
+<summary>
+Example use (click here to expand)
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+register_data.get_expired_records.first.item
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand)
+</summary>
+
+```
+
+{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+
+```
+
+</details>
+
+#### `refresh_data`
+
+Downloads register data. Call this method when you want to refresh data immediately rather than waiting for the `cache_duration` to expire.
+
+## Collections
+
+The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
+
+[`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb),
+[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb)  and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+
+### `EntryCollection`
+
+A collection of `Entry` objects.
+
+#### `each`
+
+Yields each `Entry` object in the collection.
+
+#### `page(int page=1)`
+
+Returns all `Entry` objects in the collection, according to the specified `page` number (defaults to `1`).
+
+If there are fewer results than the current `page_size`, all results are returned.
+
+### `Entry`
+
+#### `entry_number`
+
+Gets the entry number of the entry.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.entry_number
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+52
+```
+</details>
+
+##### `key`
+
+Gets the key of the entry.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.key
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+CZ
+```
+</details>
+
+##### `timestamp`
+
+Gets the timestamp of when the entry was appended to the register.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.timestamp
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+2016-04-05T13:23:05Z
+```
+</details>
+
+##### `item_hash`
+
+Gets the SHA-256 hash of the item which the entry points to.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.item_hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed
+```
+</details>
+
+##### `value`
+
+Returns the entry as a hash.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
+entry.value.to_json
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+"{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
+```
+</details>
+
+### `ItemCollection`
+
+A collection of `Item` objects.
+
+#### `each`
+
+Yields each `Item` object in the collection.
+
+#### `page(int page=1)`
+
+Returns all `Item` objects in the collection, according to the specified `page` number (defaults to `1`).
+
+If there are fewer results than the current `page_size`, all results are returned.
+
+### `Item`
 
 #### `hash`
 
@@ -160,148 +634,21 @@ true
 ```
 </details>
 
-### Entry
+### `RecordCollection`
 
-#### `entry_number`
+A collection of `Record` objects.
 
-Gets the entry number of the entry.
+#### `each`
 
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
+Yields each `Record` object in the collection.
 
-```
+#### `page(int page=1)`
 
-register_data = registers_client.get_register('country', 'beta')
+Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`).
 
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.entry_number
+If there are fewer results than the current `page_size`, all results are returned.
 
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-52
-```
-</details>
-
-#### `key`
-
-Gets the key of the entry.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.key
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-CZ
-```
-</details>
-
-#### `timestamp`
-
-Gets the timestamp of when the entry was appended to the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.timestamp
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-2016-04-05T13:23:05Z
-```
-</details>
-
-#### `item_hash`
-
-Gets the SHA-256 hash of the item which the entry points to.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.item_hash
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed
-```
-</details>
-
-#### `value`
-
-Returns the entry as a hash.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-entry = register_data.get_entries.select {|entry| entry.key == 'CZ'}.first
-entry.value.to_json
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-"{"key":"CZ","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:c45bd0b4785680534e07c627a5eea0d2f065f0a4184a02ba2c1e643672c3f2ed"}"
-```
-</details>
-
-### Record
+### `Record`
 
 #### `entry`
 
@@ -359,39 +706,8 @@ Expected output (click here to expand):
 ```
 </details>
 
-## Collections
 
-The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
-
-### EntryCollection
-
-A collection of `Entry` objects.
-
-#### `each`
-
-Yields each `Entry` object in the collection.
-
-#### `page(int page=1)`
-
-Returns all `Entry` objects in the collection, according to the specified `page` number (defaults to `1`).
-
-If there are fewer results than the current `page_size`, all results are returned.
-
-### RecordCollection
-
-A collection of `Record` objects.
-
-#### `each`
-
-Yields each `Record` object in the collection.
-
-#### `page(int page=1)`
-
-Returns `Record` objects in the collection, according to the specified `page` number (defaults to `1`).
-
-If there are fewer results than the current `page_size`, all results are returned.
-
-### RecordMapCollection
+### `RecordMapCollection`
 
 A map of record key to list of both the current and historical `Record` objects for each key.
 
@@ -490,292 +806,3 @@ ull}}]],
 ```
 </details>
 
-## <a id="registerclient"></a>The `RegisterClient` class
-
-_Note: All examples use the [Country register](https://country.register.gov.uk/)._
-
-### `get_entries`
-
-Get all entries from the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_entries.first.item_hash
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-
-sha-256:a074752a77011b18447401652029a9129c53b4ee35e1d99e6dec8b42ff4a0103
-
-```
-</details>
-
-### `get_records`
-
-Get all records from the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_records.first.item.value
-
-```
-</details>
-<details>
-
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
-
-```
-
-</details>
-
-### `get_metadata_records`
-
-Get all metadata records of the register. This includes the register definition, field definitions and custodian.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_metadata_records.first.item.value
-
-```
-</details>
-<details>
-
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"name"=>"country"}
-
-```
-</details>
-
-### `get_field_definitions`
-
-Get definitions for the fields used in the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_field_definitions.first.item.value
-
-```
-
-</details>
-<details>
-
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"cardinality"=>"1", "datatype"=>"string", "field"=>"country", "phase"=>"beta", "register"=>"country", "text"=>"The country's 2-letter ISO 3166-2 alpha2 code."}
-
-```
-
-</details>
-
-### `get_register_definition`
-
-Get the definition of the register.
-
-<details>
-<summary>
-Example use (click here to expand):
- </summary>
-
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_register_definition.item.value
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}
-
-```
-
-</details>
-
-### `get_custodian`
-
-Get the name of the current custodian for the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_custodian.item.value['custodian']
-
-```
-
-</details>
-<details>
-
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-David de Silva
-
-```
-
-</details>
-
-### `get_records_with_history`
-
-Get current and previous versions of records in the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-germany = register_data.get_records_with_history.get_records_for_key('DE').first
-puts germany.to_json
-
-```
-
-</details>
-
-<details>
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"key":"DE","records":[{"key":"DE","entry_number":234,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","item":{"citizen-names":"West German","country":"DE","end-date":"1990-10-02","name":"West Germany","official-name":"Federal Republic of Germany"}}
-
-```
-
-</details>
-
-### `get_current_records`
-
-Get all current records from the register.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_current_records.first.item
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
-</summary>
-
-```
-
-{"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
-
-```
-
-</details>
-
-### `get_expired_records`
-
-Get all expired records from the register.
-
-<details>
-<summary>
-Example use (click here to expand)
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-register_data.get_expired_records.first.item
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand)
-</summary>
-
-```
-
-{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
-
-```
-
-</details>
-
-### `refresh_data`
-
-Downloads register data. Call this method when you want to refresh data immediately rather than waiting for the `cache_duration` to expire.
