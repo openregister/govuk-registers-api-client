@@ -29,7 +29,7 @@ gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-rub
 
 ## Get started 
 
-The `RegisterClientManager` is the entry point of Registers Ruby client: 
+The `RegisterClientManager` is the entry point of the Registers Ruby client: 
 
 ```
 require 'register_client_manager'
