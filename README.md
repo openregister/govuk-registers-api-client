@@ -13,8 +13,11 @@ Registers are authoritative lists of information. The data is owned by [custodia
   * [`RegisterClient`](#registerclient) 
   * [Collections](#collections) 
     + [EntryCollection](#entrycollection)
+    + [Entry](#entry)
     + [ItemCollection](#itemcollection)
+    + [Item](#item)
     + [RecordCollection](#recordcollection)
+    + [Record](#record) 
     + [RecordMapCollection](#recordmapcollection) 
 
 ## Installation
