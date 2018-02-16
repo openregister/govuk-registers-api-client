@@ -11,7 +11,11 @@ Registers are authoritative lists of information. The data is owned by [custodia
 - [Reference](#reference)
   * [`RegisterClientManager`](#registerclientmanager)
   * [`RegisterClient`](#registerclient) 
-  * [Collections](#collections)  
+  * [Collections](#collections) 
+    + [EntryCollection](#entrycollection)
+    + [ItemCollection](#itemcollection)
+    + [RecordCollection](#recordcollection)
+    + [RecordMapCollection](#recordmapcollection) 
 
 ## Installation
 
@@ -524,6 +528,109 @@ Expected output (click here to expand):
 ```
 </details>
 
+### `ItemCollection`
+
+A collection of `Item` objects.
+
+#### `each`
+
+Yields each `Item` object in the collection.
+
+#### `page(int page=1)`
+
+Returns all `Item` objects in the collection, according to the specified `page` number (defaults to `1`).
+
+If there are fewer results than the current `page_size`, all results are returned.
+
+### `Item`
+
+#### `hash`
+
+Returns the SHA-256 hash of the item.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.hash
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"
+
+```
+</details>
+
+#### `value`
+
+Returns the key-value pairs represented by the item in a `JSON` object.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.value
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+
+{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}
+
+```
+</details>
+
+#### `has_end_date`
+
+Returns a boolean to describe whether the item contains a key-value pair for the `end-date` field.
+
+<details>
+<summary>
+Example use (click here to expand):
+</summary>
+
+```
+
+register_data = registers_client.get_register('country', 'beta')
+
+item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
+item.has_end_date
+
+```
+</details>
+<details>
+<summary>
+Expected output (click here to expand):
+ </summary>
+
+```
+true
+```
+</details>
+
 ### `RecordCollection`
 
 A collection of `Record` objects.
@@ -693,95 +800,6 @@ ull}}]],
 
 ["AD",[{"entry":{"rsf_line":null,"entry_number":10,"parsed_entry":{"key":"AD","timestamp":"2016-04-05T13:23:05Z","item_hash":"sha-256:14fcb5099f0eff4c40d5a85b0e3c2f1a04337dc69dace1fc5c64ec9758a19b13"}},"item":{"item_json":"{\"citizen-names\":\"Andorran\",\"country\":\"AD\",\"name\":\"Andorra\",\"official-name\":\"The Principality of Andorra\"}","item_hash":"sha-256:14fcb5099f0eff4c40d5a85b0e3c2f1a04337dc69dace1fc5c64ec9758a19b13","parsed_item":null}}]]]"
 
-```
-</details>
-
-### `Item`
-
-#### `hash`
-
-Returns the SHA-256 hash of the item.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.hash
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-
-"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a"
-
-```
-</details>
-
-#### `value`
-
-Returns the key-value pairs represented by the item in a `JSON` object.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.value
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-
-{"item_json":"{\"citizen-names\":\"Soviet citizen\",\"country\":\"SU\",\"end-date\":\"1991-12-25\",\"name\":\"USSR\",\"official-name\":\"Union of Soviet Socialist Republics\"}","item_hash":"sha-256:e94c4a9ab00d951dadde848ee2c9fe51628b22ff2e0a88bff4cca6e4e6086d7a","parsed_item":null}
-
-```
-</details>
-
-#### `has_end_date`
-
-Returns a boolean to describe whether the item contains a key-value pair for the `end-date` field.
-
-<details>
-<summary>
-Example use (click here to expand):
-</summary>
-
-```
-
-register_data = registers_client.get_register('country', 'beta')
-
-item = register_data.get_records.select {|record| record.entry.key == 'SU'}.first.item
-item.has_end_date
-
-```
-</details>
-<details>
-<summary>
-Expected output (click here to expand):
- </summary>
-
-```
-true
 ```
 </details>
 
