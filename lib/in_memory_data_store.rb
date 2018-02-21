@@ -20,7 +20,8 @@ module RegistersClient
         entries: { user: [], system: [] },
         items: {},
         user_entry_number: 0,
-        system_entry_number: 0
+        system_entry_number: 0,
+        register_proof: "sha-256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
 
     end
@@ -39,6 +40,10 @@ module RegistersClient
       end
 
       @data[:records][entry_type][entry.key] << entry.entry_number
+    end
+
+    def update_register_proof(register_proof)
+      @data[:register_proof] = register_proof
     end
 
     def get_item(item_hash)
@@ -83,6 +88,10 @@ module RegistersClient
       entries = @data[:entries][entry_type]
       entry = entries.any? ? entries.last : nil
       entry.nil? ? 0 : entry.entry_number
+    end
+
+    def get_latest_register_proof
+      @data[:register_proof]
     end
 
     def after_load

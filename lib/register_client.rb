@@ -79,7 +79,8 @@ module RegistersClient
       user_entry_number = @data_store.get_latest_entry_number(:user)
       rsf = download_rsf(user_entry_number)
 
-      validate_register_integrity(rsf, user_entry_number)
+      register_proof = @data_store.get_latest_register_proof
+      validate_register_integrity(rsf, user_entry_number, register_proof)
       update_data_from_rsf(rsf, user_entry_number, @data_store)
     end
 
@@ -112,13 +113,18 @@ module RegistersClient
       @register_proof = JSON.parse(register_http_request('proof/register/merkle:sha-256'))
     end
 
-    def validate_register_integrity(rsf, current_entry_number)
+    def validate_register_integrity(rsf, current_entry_number, current_register_proof)
       rsf_lines = rsf.split("\n")
+      beginning_root_hash = rsf_lines[0].split("\t")[1]
       latest_root_hash = rsf_lines[rsf_lines.length - 1].split("\t")[1]
       register_proof = get_register_proof
 
       if (register_proof['total-entries'] < current_entry_number)
         raise InvalidRegisterError, 'Register has been reloaded with different data - different number of entries'
+      end
+
+      if (beginning_root_hash != current_register_proof)
+        raise InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match'
       end
 
       if (register_proof['root-hash'] != latest_root_hash)
@@ -152,6 +158,8 @@ module RegistersClient
           end
 
           data_store.append_entry(entry)
+        elsif command == 'assert-root-hash'
+          @data_store.update_register_proof(params[1])
         end
       end
 

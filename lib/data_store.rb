@@ -5,6 +5,9 @@ module DataStore
   def append_entry(entry)
   end
 
+  def update_register_proof(register_proof)
+  end
+
   def get_item(item_hash)
   end
 
@@ -24,6 +27,9 @@ module DataStore
   end
 
   def get_latest_entry_number(entry_type)
+  end
+
+  def get_latest_register_proof
   end
 
   def after_load

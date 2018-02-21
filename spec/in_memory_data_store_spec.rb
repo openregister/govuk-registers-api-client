@@ -251,6 +251,18 @@ RSpec.describe RegistersClient::InMemoryDataStore do
     end
   end
 
+  describe 'get_latest_register_proof' do
+    before(:each) do
+      setup
+    end
+
+    it 'should get the latest register proof' do
+      register_proof = @data_store.get_latest_register_proof
+
+      expect(register_proof).to eq("sha-256:401ce60c619a0bd305264adb5f3992f19b758ded8754e0ffe0bed3832b3de28d")
+    end
+  end
+
   def setup(config_options = {})
     dir = File.dirname(__FILE__)
     rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
