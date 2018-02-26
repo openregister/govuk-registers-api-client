@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# stub: registers-ruby-client 0.9.1 ruby lib
+# stub: registers-ruby-client 0.10.0 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "registers-ruby-client".freeze
