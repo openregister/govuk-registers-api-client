@@ -511,7 +511,7 @@ RSpec.describe RegistersClient::RegisterClient do
     update_rsf = File.read(File.join(dir, 'fixtures/country_register_update.rsf'))
     no_new_updates_rsf = "assert-root-hash\tsha-256:fa87bc961ed7fa6dde75db82cda8a6df8d8427da36bbf448fff6b177c2486cdb"
 
-    @config_options = { page_size: 100, cache_duration: 30 }.merge(config_options)
+    @config_options = { page_size: 100 }.merge(config_options)
     @page_size = 100
     @data_store = RegistersClient::InMemoryDataStore.new(@config_options)
 

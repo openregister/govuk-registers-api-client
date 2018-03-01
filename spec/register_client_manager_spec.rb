@@ -69,7 +69,7 @@ RSpec.describe RegistersClient::RegisterClientManager do
     end
 
     it 'should pass the correct page size to the register client' do
-      client_manager = RegistersClient::RegisterClientManager.new({page_size: 30, cache_duration: 300 })
+      client_manager = RegistersClient::RegisterClientManager.new({ page_size: 30 })
 
       register_client = client_manager.get_register("country", "test", nil)
 
@@ -100,7 +100,7 @@ RSpec.describe RegistersClient::RegisterClientManager do
         "root-hash" => 'sha-256:b07ba1534556b440937bc3f9eccfbb9140200c66a03c73050bdcfa60db63a752'
     }
 
-    @config_options = { page_size: 10, cache_duration: 60 }
+    @config_options = { page_size: 10 }
     @page_size = 10
     @field_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
     @country_test_data_store = RegistersClient::InMemoryDataStore.new(@config_options)
