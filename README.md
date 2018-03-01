@@ -94,7 +94,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_entries.first.item_hash
+register_data.get_entries
 
 ```
 </details>
@@ -105,7 +105,7 @@ Expected output (click here to expand):
 
 ```
 
-sha-256:a074752a77011b18447401652029a9129c53b4ee35e1d99e6dec8b42ff4a0103
+An EntryCollection instance.
 
 ```
 </details>
@@ -124,7 +124,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_records.first.item.value
+register_data.get_records
 
 ```
 </details>
@@ -136,7 +136,7 @@ Expected output (click here to expand):
 
 ```
 
-{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+A RecordCollection instance.
 
 ```
 
@@ -156,7 +156,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_metadata_records.first.item.value
+register_data.get_metadata_records
 
 ```
 </details>
@@ -168,7 +168,7 @@ Expected output (click here to expand):
 
 ```
 
-{"name"=>"country"}
+A RecordCollection instance.
 
 ```
 </details>
@@ -187,7 +187,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_field_definitions.first.item.value
+register_data.get_field_definitions
 
 ```
 
@@ -200,7 +200,7 @@ Expected output (click here to expand):
 
 ```
 
-{"cardinality"=>"1", "datatype"=>"string", "field"=>"country", "phase"=>"beta", "register"=>"country", "text"=>"The country's 2-letter ISO 3166-2 alpha2 code."}
+A RecordCollection instance.
 
 ```
 
@@ -220,7 +220,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_register_definition.item.value
+register_data.get_register_definition
 
 ```
 </details>
@@ -231,7 +231,7 @@ Expected output (click here to expand):
 
 ```
 
-{"fields":["country","name","official-name","citizen-names","start-date","end-date"],"phase":"beta","register":"country","registry":"foreign-commonwealth-office","text":"British English-language names and descriptive terms for countries"}
+A Record instance.
 
 ```
 
@@ -251,7 +251,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_custodian.item.value['custodian']
+register_data.get_custodian
 
 ```
 
@@ -264,7 +264,7 @@ Expected output (click here to expand):
 
 ```
 
-David de Silva
+A Record instance.
 
 ```
 
@@ -283,8 +283,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-germany = register_data.get_records_with_history.get_records_for_key('DE').first
-puts germany.to_json
+germany = register_data.get_records_with_history
 
 ```
 
@@ -297,7 +296,7 @@ Expected output (click here to expand):
 
 ```
 
-{"key":"DE","records":[{"key":"DE","entry_number":234,"timestamp":"2016-04-05T13:23:05Z","hash":"sha-256:e03f97c2806206cdc2cc0f393d09b18a28c6f3e6218fc8c6f3aa2fdd7ef9d625","item":{"citizen-names":"West German","country":"DE","end-date":"1990-10-02","name":"West Germany","official-name":"Federal Republic of Germany"}}
+A RecordMapCollection instance.
 
 ```
 
@@ -316,7 +315,7 @@ Example use (click here to expand):
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_current_records.first.item
+register_data.get_current_records
 
 ```
 </details>
@@ -327,7 +326,7 @@ Expected output (click here to expand):
 
 ```
 
-{"citizen-names"=>"German", "country"=>"DE", "name"=>"Germany", "official-name"=>"The Federal Republic of Germany", "start-date"=>"1990-10-03"}
+A RecordCollection instance.
 
 ```
 
@@ -346,7 +345,7 @@ Example use (click here to expand)
 
 register_data = registers_client.get_register('country', 'beta')
 
-register_data.get_expired_records.first.item
+register_data.get_expired_records
 
 ```
 </details>
@@ -357,7 +356,7 @@ Expected output (click here to expand)
 
 ```
 
-{"citizen-names"=>"Soviet citizen", "country"=>"SU", "end-date"=>"1991-12-25", "name"=>"USSR", "official-name"=>"Union of Soviet Socialist Republics"}
+A RecordCollection instance.
 
 ```
 
