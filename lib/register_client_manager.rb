@@ -2,7 +2,7 @@ require 'register_client'
 require 'in_memory_data_store'
 
 module RegistersClient
-    VERSION = '0.10.0'
+    VERSION = '1.0.0'
     class RegisterClientManager
       def initialize(config_options = {})
         @config_options = defaults.merge(config_options)
@@ -33,7 +33,6 @@ module RegistersClient
   
       def defaults
         {
-            cache_duration: 30,
             page_size: 100
         }
       end

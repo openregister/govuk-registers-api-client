@@ -2,7 +2,7 @@
 
 You can use this Ruby client to integrate your service with [GOV.UK Registers](https://registers.cloudapps.digital/).
 
-Registers are authoritative lists of information. The data is owned by [custodians](https://www.gov.uk/government/collections/registers-guidance#creating-and-managing-registers) inside departments and services. For example, the [Country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO). 
+Registers are authoritative lists of information. The data is owned by [custodians](https://www.gov.uk/government/collections/registers-guidance#creating-and-managing-registers) inside departments and services. For example, the [Country register](https://country.register.gov.uk/) is maintained by a custodian in the Foreign and Commonwealth Office (FCO).
 
 ## Table of Contents
 
@@ -27,23 +27,21 @@ In your Gemfile, add:
 gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-ruby-client.git'
 ```
 
-## Get started 
+## Get started
 
-The `RegisterClientManager` is the entry point of the Registers Ruby client: 
+The `RegisterClientManager` is the entry point of the Registers Ruby client:
 
 ```
 require 'register_client_manager'
 
 registers_client = RegistersClient::RegisterClientManager.new({
-  cache_duration: 3600,
   page_size: 10
 })
 ```
 
-The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method. 
+The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method.
 
 When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
-- `cache_duration`: time, in seconds, register data is cached in-memory before any updates are retrieved - default is `3600`
 - `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
 ## Reference
@@ -367,7 +365,7 @@ Expected output (click here to expand)
 
 #### `refresh_data`
 
-Downloads register data. Call this method when you want to refresh data immediately rather than waiting for the `cache_duration` to expire.
+Downloads register data. Call this method when you want to refresh data.
 
 ## Collections
 

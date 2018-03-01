@@ -5,7 +5,7 @@ require 'in_memory_data_store'
 RSpec.describe RegistersClient::InMemoryDataStore do
   describe 'add_item' do
     before(:each) do
-      @config_options = { page_size: 2, cache_duration: 30 }
+      @config_options = { page_size: 2 }
     end
 
     it 'should add item to the data store' do
@@ -23,7 +23,7 @@ RSpec.describe RegistersClient::InMemoryDataStore do
 
   describe 'append_entry' do
     before(:each) do
-      @config_options = { page_size: 2, cache_duration: 30 }
+      @config_options = { page_size: 2 }
     end
 
     it 'should add entry and record to the data store' do
@@ -255,7 +255,7 @@ RSpec.describe RegistersClient::InMemoryDataStore do
     dir = File.dirname(__FILE__)
     rsf = File.read(File.join(dir, 'fixtures/country_register.rsf'))
 
-    @config_options = { page_size: 2, cache_duration: 30 }.merge(config_options)
+    @config_options = { page_size: 2 }.merge(config_options)
     @page_size = 100
 
     allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf)
