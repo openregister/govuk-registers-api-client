@@ -8,33 +8,6 @@ RSpec::Core::RakeTask.new do |t|
   t.rspec_opts = %w(--format documentation --colour)
 end
 
-task default: ['spec']
-
-spec = Gem::Specification.new do |s|
-  s.name              = 'registers-ruby-client'
-  s.version           = File.read('.version').chomp
-  s.summary           = 'A Ruby Client Library for Open Registers'
-  s.author            = 'Registers Team'
-  s.email             = 'registers ~@nospam@~ digital.cabinet-office.gov.uk'
-  s.homepage          = 'https://github.com/openregister/registers-ruby-client'
-  s.licenses          = ['MIT']
-
-  s.has_rdoc          = false
-  s.extra_rdoc_files  = %w(README.md)
-  s.rdoc_options      = %w(--main README.md)
-
-  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/register_client_manager.rb".freeze]
-  s.require_paths     = ['lib']
-
-  s.add_runtime_dependency 'rest-client', '~> 1'
-
-end
-
-# This task actually builds the gem.
-Gem::PackageTask.new(spec) do |pkg|
-  pkg.gem_spec = spec
-end
-
 desc "Build the gemspec file #{spec.name}.gemspec"
 task :gemspec do
   file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
