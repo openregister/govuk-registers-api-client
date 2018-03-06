@@ -24,7 +24,7 @@ Registers are authoritative lists of information. The data is owned by [custodia
 
 In your Gemfile, add:
 ```
-gem 'govuk-register-api-client'
+gem 'govuk-registers-api-client'
 ```
 
 ## Get started
