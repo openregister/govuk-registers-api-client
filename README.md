@@ -10,21 +10,21 @@ Registers are authoritative lists of information. The data is owned by [custodia
 - [Get started](#get-started)
 - [Reference](#reference)
   * [`RegisterClientManager`](#registerclientmanager)
-  * [`RegisterClient`](#registerclient) 
-  * [Collections](#collections) 
+  * [`RegisterClient`](#registerclient)
+  * [Collections](#collections)
     + [EntryCollection](#entrycollection)
     + [Entry](#entry)
     + [ItemCollection](#itemcollection)
     + [Item](#item)
     + [RecordCollection](#recordcollection)
-    + [Record](#record) 
-    + [RecordMapCollection](#recordmapcollection) 
+    + [Record](#record)
+    + [RecordMapCollection](#recordmapcollection)
 
 ## Installation
 
 In your Gemfile, add:
 ```
-gem 'registers-ruby-client', git: 'https://github.com/openregister/registers-ruby-client.git'
+gem 'registers-ruby-client'
 ```
 
 ## Get started
@@ -52,7 +52,7 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
-The `data_store` parameter specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can also create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database. 
+The `data_store` parameter specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can also create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database.
 
 <details>
 <summary>
@@ -77,7 +77,7 @@ A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f
 ```
 </details>
 
-### <a id="registerclient"></a>`RegisterClient` 
+### <a id="registerclient"></a>`RegisterClient`
 
 _Note: All examples use the [Country register](https://country.register.gov.uk/)._
 

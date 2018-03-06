@@ -14,7 +14,6 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_cache (1.1.0)
     netrc (0.11.0)
     public_suffix (3.0.1)
     rake (12.3.0)
@@ -48,7 +47,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mini_cache
   rake
   rest-client (>= 2.0.1)
   rspec (~> 3.7)
