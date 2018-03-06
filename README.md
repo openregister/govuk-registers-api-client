@@ -24,7 +24,7 @@ Registers are authoritative lists of information. The data is owned by [custodia
 
 In your Gemfile, add:
 ```
-gem 'registers-ruby-client'
+gem 'govuk-register-api-client'
 ```
 
 ## Get started
@@ -370,8 +370,8 @@ Downloads register data. Call this method when you want to refresh data.
 
 The majority of the methods available in the `RegisterClient` return one of three types of collection object. These collections all include `Enumerable` and implement the `each` method.
 
-[`EntryCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/entry_collection.rb),
-[`ItemCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/item_collection.rb)  and [`RecordCollection`](https://github.com/openregister/registers-ruby-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
+[`EntryCollection`](https://github.com/openregister/govuk-registers-api-client/blob/master/lib/entry_collection.rb),
+[`ItemCollection`](https://github.com/openregister/govuk-registers-api-client/blob/master/lib/item_collection.rb)  and [`RecordCollection`](https://github.com/openregister/govuk-registers-api-client/blob/master/lib/record_collection.rb) are all `Enumerable` and implement the same [Collections](#collections) interface.
 
 ### `EntryCollection`
 
