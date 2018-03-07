@@ -72,7 +72,7 @@ Expected output (click here to expand):
 
 ```
 
-A RegisterClient instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f740>
+A [`RegisterClient`](#registerclient) instance e.g. #<RegistersClient::RegisterClient:0x00007f893c55f740>
 
 ```
 </details>
@@ -105,7 +105,7 @@ Expected output (click here to expand):
 
 ```
 
-An EntryCollection instance.
+An [`EntryCollection`](#entrycollection) instance.
 
 ```
 </details>
@@ -136,7 +136,7 @@ Expected output (click here to expand):
 
 ```
 
-A RecordCollection instance.
+A [`RecordCollection`](#recordcollection) instance.
 
 ```
 
@@ -168,7 +168,7 @@ Expected output (click here to expand):
 
 ```
 
-A RecordCollection instance.
+A [`RecordCollection`](#recordcollection) instance.
 
 ```
 </details>
@@ -200,7 +200,7 @@ Expected output (click here to expand):
 
 ```
 
-A RecordCollection instance.
+A [`RecordCollection`](#recordcollection) instance.
 
 ```
 
@@ -231,7 +231,7 @@ Expected output (click here to expand):
 
 ```
 
-A Record instance.
+A [`Record`](#record) instance.
 
 ```
 
@@ -264,7 +264,7 @@ Expected output (click here to expand):
 
 ```
 
-A Record instance.
+A [`Record`](#record) instance.
 
 ```
 
@@ -296,7 +296,7 @@ Expected output (click here to expand):
 
 ```
 
-A RecordMapCollection instance.
+A [`RecordMapCollection`](#recordmapcollection) instance.
 
 ```
 
@@ -326,7 +326,7 @@ Expected output (click here to expand):
 
 ```
 
-A RecordCollection instance.
+A [`RecordCollection`](#recordcollection) instance.
 
 ```
 
@@ -356,7 +356,7 @@ Expected output (click here to expand)
 
 ```
 
-A RecordCollection instance.
+A [`RecordCollection`](#recordcollection) instance.
 
 ```
 
@@ -375,7 +375,7 @@ The majority of the methods available in the `RegisterClient` return one of thre
 
 ### `EntryCollection`
 
-A collection of `Entry` objects.
+A collection of [`Entry`](#entry) objects.
 
 #### `each`
 
@@ -530,7 +530,7 @@ Expected output (click here to expand):
 
 ### `ItemCollection`
 
-A collection of `Item` objects.
+A collection of [`Item`](#item) objects.
 
 #### `each`
 
@@ -633,7 +633,7 @@ true
 
 ### `RecordCollection`
 
-A collection of `Record` objects.
+A collection of [`Record`](#record) objects.
 
 #### `each`
 
@@ -649,7 +649,7 @@ If there are fewer results than the current `page_size`, all results are returne
 
 #### `entry`
 
-Gets the `Entry` object associated with the record.
+Gets the [`Entry`](#entry) object associated with the record.
 
 <details>
 <summary>
@@ -677,7 +677,7 @@ Expected output (click here to expand):
 
 #### `item`
 
-Gets the `Item` object associated with the record.
+Gets the [`Item`](#item) object associated with the record.
 
 <details>
 <summary>
@@ -802,4 +802,3 @@ ull}}]],
 
 ```
 </details>
-
