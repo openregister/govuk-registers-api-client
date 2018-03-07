@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# stub: govuk-registers-api-client 1.0.0 ruby lib
+# stub: govuk-registers-api-client 1.0.1 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "govuk-registers-api-client".freeze
@@ -11,7 +11,9 @@ Gem::Specification.new do |s|
   s.date = "2017-11-06"
   s.email = "registers ~@nospam@~ digital.cabinet-office.gov.uk".freeze
   s.extra_rdoc_files = ["README.md".freeze]
-  s.files = ["Gemfile".freeze, "LICENSE".freeze, "README.md".freeze, "lib/register_client_manager.rb".freeze]
+  s.files = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
   s.homepage = "https://github.com/openregister/govuk-registers-api-client".freeze
   s.licenses = ["MIT".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze]
