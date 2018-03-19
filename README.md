@@ -275,7 +275,7 @@ Expected output (click here to expand):
 
 A Record instance.
 
-```sdsd
+```
 
 </details>
 
