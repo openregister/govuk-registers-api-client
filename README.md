@@ -48,11 +48,18 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 
 ### <a id="registerclientmanager"></a>`RegisterClientManager`
 
-##### <a id="getregister"></a>`get_register(register, phase, data_store = nil)`
+##### <a id="getregister"></a>`get_register(register, phase, options = {})`
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
-The `data_store` parameter specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can also create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database.
+You can pass an optional `options` object, which can include any of the following properties:
+
+- api_key
+- data_store
+
+The `api_key` is the API key you received after signing-up your service on our product page.
+
+The `data_store` specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can also create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database.
 
 <details>
 <summary>
@@ -61,7 +68,10 @@ Example use (click here to expand):
 
 ```
 
-registers_client.get_register('country', 'beta', nil)
+options = {
+  api_key: "68fc3741-fab0-4615-a9c8-08a8696d4371"
+}
+registers_client.get_register('country', 'beta', options)
 
 ```
 </details>
@@ -266,7 +276,7 @@ Expected output (click here to expand):
 
 A Record instance.
 
-```
+```sdsd
 
 </details>
 
@@ -802,4 +812,3 @@ ull}}]],
 
 ```
 </details>
-

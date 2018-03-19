@@ -474,6 +474,27 @@ RSpec.describe RegistersClient::RegisterClient do
 
       expect{client.refresh_data}.to raise_error(InvalidRegisterError, 'Register has been reloaded with different data - root hashes do not match')
     end
+
+    it 'should not set the Auth header in the download request when API is not present' do
+      options = {}
+
+      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', {}).once
+
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size, options)
+      client.send(:register_http_request, "https://country.test.openregister.org/download")
+    end
+
+    it 'should set the Auth header in the download request when API key is present' do
+      api_key = "f5f53ca1-3408-4034-8ba7-008e8e75f5ea"
+      options = {
+          api_key: api_key
+      }
+
+      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', { Authorization: api_key }).once
+
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size, options)
+      client.send(:register_http_request, "https://country.test.openregister.org/download")
+    end
   end
 
   describe 'get_root_hash' do
