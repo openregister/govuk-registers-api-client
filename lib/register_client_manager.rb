@@ -21,7 +21,7 @@ module RegistersClient
           data_store = options.has_key?(:data_store) ? options[:data_store] : RegistersClient::InMemoryDataStore.new(@config_options)
           register_url = get_register_url(register, environment_url)
 
-          @register_clients[key] = create_register_client(register_url, data_store, @config_options.fetch(:page_size), options)
+          @register_clients[key] = create_register_client(register_url, data_store, @config_options.fetch(:page_size))
         end
   
         @register_clients[key]
@@ -31,13 +31,14 @@ module RegistersClient
   
       def defaults
         {
+            api_key: nil,
             page_size: 100
         }
       end
 
-      def create_register_client(register_url, data_store, page_size, options)
+      def create_register_client(register_url, data_store, page_size)
         register_options = {
-            api_key: options.has_key?(:api_key) ? options[:api_key] : nil
+            api_key: @config_options.has_key?(:api_key) ? @config_options[:api_key] : nil
         }
 
         RegistersClient::RegisterClient.new(register_url, data_store, page_size, register_options)

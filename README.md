@@ -35,6 +35,7 @@ The `RegisterClientManager` is the entry point of the Registers Ruby client:
 require 'register_client_manager'
 
 registers_client = RegistersClient::RegisterClientManager.new({
+  api_key: "68fc3741-fab0-4615-a9c8-08a8696d4371",
   page_size: 10
 })
 ```
@@ -42,6 +43,7 @@ registers_client = RegistersClient::RegisterClientManager.new({
 The `RegisterClientManager` maintains individual instances of [`RegisterClient`](#registerclient) for each register you access via the [`get_register`](#getregister) method.
 
 When creating a new `RegisterClientManager`, you can pass a configuration object to specify the following:
+- The `api_key` is the API key you received after signing-up your service on our product page.
 - `page_size`: number of results returned per page when using the `page` method of any of the collection classes (see below for more information) - default is `100`
 
 ## Reference
@@ -52,12 +54,9 @@ When creating a new `RegisterClientManager`, you can pass a configuration object
 
 Gets the `RegisterClient` instance for the given `register` name and `phase`.
 
-You can pass an optional `options` object, which can include any of the following properties:
+You can pass an optional `options` object, which can include the following properties:
 
-- api_key
 - data_store
-
-The `api_key` is the API key you received after signing-up your service on our product page.
 
 The `data_store` specifies the data store to use accessing a particular register. You can omit this parameter, which will make it default to the `InMemoryDataStore` value. You can also create a custom data store to include the `DataStore` module and to implement the methods it defines. For example, to insert register data directly into your Postgres database.
 
@@ -69,7 +68,7 @@ Example use (click here to expand):
 ```
 
 options = {
-  api_key: "68fc3741-fab0-4615-a9c8-08a8696d4371"
+  data_store: nil
 }
 registers_client.get_register('country', 'beta', options)
 
