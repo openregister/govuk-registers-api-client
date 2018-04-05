@@ -38,7 +38,7 @@ module RegistersClient
 
       def create_register_client(register_url, data_store, page_size)
         register_options = {
-            api_key: @config_options.has_key?(:api_key) ? @config_options[:api_key] : nil
+            api_key: @config_options[:api_key]
         }
 
         RegistersClient::RegisterClient.new(register_url, data_store, page_size, register_options)

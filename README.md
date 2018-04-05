@@ -35,7 +35,7 @@ The `RegisterClientManager` is the entry point of the Registers Ruby client:
 require 'register_client_manager'
 
 registers_client = RegistersClient::RegisterClientManager.new({
-  api_key: "68fc3741-fab0-4615-a9c8-08a8696d4371",
+  api_key: "`YOUR API KEY HERE`",
   page_size: 10
 })
 ```

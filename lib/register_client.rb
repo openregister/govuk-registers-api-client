@@ -170,7 +170,7 @@ module RegistersClient
     def register_http_request(path)
       headers = {}
 
-      if (@options[:api_key] != nil)
+      unless @options[:api_key] == nil
         headers[:Authorization] = @options[:api_key]
       end
 
