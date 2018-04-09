@@ -5,10 +5,11 @@ require 'exceptions/invalid_hash_value_error'
 
 module RegistersClient
   class RegisterClient
-    def initialize(register_url, data_store, page_size)
+    def initialize(register_url, data_store, page_size, options = {})
       @register_url = register_url
       @data_store = data_store
       @page_size = page_size
+      @options = options
 
       refresh_data
     end
@@ -149,11 +150,11 @@ module RegistersClient
           if params[1] == 'user'
             user_entry_number += 1
 
-            entry = Entry.new(line, user_entry_number, params[1])
+            entry = RegistersClient::Entry.new(line, user_entry_number, params[1])
           else
             system_entry_number += 1
 
-            entry = Entry.new(line, system_entry_number, params[1])
+            entry = RegistersClient::Entry.new(line, system_entry_number, params[1])
           end
 
           data_store.append_entry(entry)
@@ -167,7 +168,13 @@ module RegistersClient
     end
 
     def register_http_request(path)
-      RestClient.get(@register_url.merge(path).to_s)
+      headers = {}
+
+      unless @options[:api_key] == nil
+        headers[:Authorization] = @options[:api_key]
+      end
+
+      RestClient.get(@register_url.merge(path).to_s, headers)
     end
 
     def is_valid_hash_value(hash_value)
