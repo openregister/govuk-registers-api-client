@@ -1,3 +1,11 @@
 language: ruby
 rvm:
-  - 2.5.0
+- 2.5.0
+deploy:
+  provider: rubygems
+  api_key:
+    secure: LxPGrDMaGkCSEETi4ztRueJ9fdnICDDfCK2CnqOcmu0zDJaf/GJ8Uu5qFnzneDr7N0Aq10iQzB4kjYo2LnKmJVo59jFqWVRg/Usd0p/aW3mfhQsyzU3YG9zesXAfapevRp7Y01s52UGy7GaKbmcoN5LUscMY5d9x28VeG+Vq8ksswkX6vkULGHWizcb9f5IC9nQM1A0dE+Scg6TEMJSBtSM3ypSTSCQX45I2lmoWjt/tWW+9fRdsFb9cnd+3DbGlt+zlU7uWyt6qm3MCnP9N66LoMkrUN9lh1c41Cr/ToVTsIUTiFYq8H/AJ40rz/EelgGPtpZ6FllQ7aVxXmA6ShcziLZRJNeWXCB9r8UwjDBe39nR5gUeYA8nHvoHFHVGksAPertVf9nZu1kFwsdK7NKvVyUtJcyPCvT5jcjx+LO30g+2yAUyRDPReZi70jWL/5M7Frm9FUq3OjRMFzeRgPeN0ECiSTIi5mkGGhWVlEl+ZQ6uw4ob3EewZZ5v1UD2QMAZqtCDQ7bYDshc5AwRDOsEwSOZGbXCMjzFER2vpzD3iud6Syr+63jNDA4TYoseAqx06IPy0CGq8WPcs7seJHgK1EVTwAdIQTY/vat8VH3Sze7kou1gmz020hM/tkkAwSTa/Em8CglRoMgGoV+jAZIxuuGzwBBsCMfONdpnbZgo=
+  gem: govuk-registers-api-client
+  on:
+    tags: true
+    repo: openregister/govuk-registers-api-client
