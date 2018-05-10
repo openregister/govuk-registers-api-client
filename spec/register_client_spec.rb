@@ -478,7 +478,7 @@ RSpec.describe RegistersClient::RegisterClient do
     it 'should not set the Auth header in the download request when API is not present' do
       options = {}
 
-      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', {}).once
+      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', user_agent: 'CL').once
 
       client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size, options)
       client.send(:register_http_request, "https://country.test.openregister.org/download")
@@ -490,7 +490,16 @@ RSpec.describe RegistersClient::RegisterClient do
           api_key: api_key
       }
 
-      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', { Authorization: api_key }).once
+      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', Authorization: api_key, user_agent: 'CL').once
+
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size, options)
+      client.send(:register_http_request, "https://country.test.openregister.org/download")
+    end
+
+      it 'should set the user agent header on the request' do
+      options = {}
+
+      expect(RestClient).to receive(:get).with('https://country.test.openregister.org/download', user_agent: 'CL').once
 
       client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size, options)
       client.send(:register_http_request, "https://country.test.openregister.org/download")

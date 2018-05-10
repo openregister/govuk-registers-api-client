@@ -168,7 +168,10 @@ module RegistersClient
     end
 
     def register_http_request(path)
-      headers = {}
+      headers = {
+        Authorization: @options[:api_key],
+        user_agent: 'CL'
+      }.compact
 
       unless @options[:api_key] == nil
         headers[:Authorization] = @options[:api_key]
