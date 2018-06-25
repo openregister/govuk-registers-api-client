@@ -138,6 +138,7 @@ module RegistersClient
 
     def update_data_from_rsf(rsf, user_entry_number, data_store)
       system_entry_number = @data_store.get_latest_entry_number(:system)
+      start_system_entry_number = system_entry_number
 
       rsf.each_line do |line|
         line.slice!("\n")
@@ -151,13 +152,15 @@ module RegistersClient
             user_entry_number += 1
 
             entry = RegistersClient::Entry.new(line, user_entry_number, params[1])
+            data_store.append_entry(entry)
           else
-            system_entry_number += 1
+            if start_system_entry_number == 0
+              system_entry_number += 1
 
-            entry = RegistersClient::Entry.new(line, system_entry_number, params[1])
+              entry = RegistersClient::Entry.new(line, system_entry_number, params[1])
+              data_store.append_entry(entry)
+            end
           end
-
-          data_store.append_entry(entry)
         elsif command == 'assert-root-hash'
           root_hash = line.split("\t")[1]
           data_store.set_root_hash(root_hash)
