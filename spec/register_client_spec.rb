@@ -367,6 +367,7 @@ RSpec.describe RegistersClient::RegisterClient do
     end
 
     it 'should get the correct custodian when the custodian has been updated' do
+      pending('This will fail until system and user entry logs are merged as it relies on RSF that ORJ will never produce')
       client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
       expected_custodian = RegistersClient::Item.new("add-item\t{\"custodian\":\"Joe Bloggs\"}")
       expected_updated_custodian = RegistersClient::Item.new("add-item\t{\"custodian\":\"Joseph Bloggs\"}")
@@ -414,8 +415,10 @@ RSpec.describe RegistersClient::RegisterClient do
   end
 
   describe 'refresh_data' do
-    before(:each) do
-      setup
+    before(:each) do |example|
+      unless example.metadata[:skip_before]
+        setup
+      end
     end
 
     it 'should update the downloaded register data' do
@@ -449,6 +452,28 @@ RSpec.describe RegistersClient::RegisterClient do
 
       expect(records.count).to eq(7)
       expect(entries.count).to eq(9)
+    end
+
+    it 'should not store system entries if system entries already exist in datastore', :skip_before do
+      dir = File.dirname(__FILE__)
+      rsf_empty_register = File.read(File.join(dir, 'fixtures/country_register_system_only.rsf'))
+      rsf_with_user_data = File.read(File.join(dir, 'fixtures/country_register.rsf'))
+      
+      @config_options = { page_size: 100 }
+      @page_size = 100
+      @data_store = RegistersClient::InMemoryDataStore.new(@config_options)
+
+      allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf_empty_register)
+      client = RegistersClient::RegisterClient.new(URI.parse('https://country.test.openregister.org'), @data_store, @page_size)
+
+      expect(@data_store.get_latest_entry_number(:system)).to eq(12)
+      expect(@data_store.get_latest_entry_number(:user)).to eq(0)
+
+      allow_any_instance_of(RegistersClient::RegisterClient).to receive(:download_rsf).with(0).and_return(rsf_with_user_data)
+      client.refresh_data
+
+      expect(@data_store.get_latest_entry_number(:system)).to eq(12)
+      expect(@data_store.get_latest_entry_number(:user)).to eq(7)
     end
 
     it 'should get the current user entry number from the datastore before refreshing data' do

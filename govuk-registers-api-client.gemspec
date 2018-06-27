@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# stub: govuk-registers-api-client 1.2.1 ruby lib
+# stub: govuk-registers-api-client 1.2.2 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "govuk-registers-api-client".freeze
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.1') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.2') then
       s.add_runtime_dependency(%q<rest-client>.freeze, ["~> 2"])
     else
       s.add_dependency(%q<rest-client>.freeze, ["~> 2"])
