@@ -154,7 +154,7 @@ module RegistersClient
             entry = RegistersClient::Entry.new(line, user_entry_number, params[1])
             data_store.append_entry(entry)
           else
-            if start_system_entry_number == 0
+            if start_system_entry_number.zero?
               system_entry_number += 1
 
               entry = RegistersClient::Entry.new(line, system_entry_number, params[1])
