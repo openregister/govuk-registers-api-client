@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["GOV.UK Registers Team (Government Digital Service)".freeze]
-  s.date = "2017-11-06"
   s.email = "registers ~@nospam@~ digital.cabinet-office.gov.uk".freeze
   s.extra_rdoc_files = ["README.md".freeze]
   s.files = `git ls-files -z`.split("\x0").reject do |f|
