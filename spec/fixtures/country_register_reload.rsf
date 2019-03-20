@@ -1,8 +1,0 @@
-assert-root-hash	sha-256:b101a2447dad89c75b30845a194eb1b55bd7f2f876b47ed35dd82c35c2a4ea17
-add-item	{"custodian":"Joseph Bloggs"}
-add-item	{"citizen-names":"Briton;British citizen","country":"GB","name":"United Kingdom","official-name":"United Kingdom of Great Britain and Northern Ireland"}
-add-item	{"citizen-names":"Bahamian","country":"BS","name":"The Bahamas","official-name":"The Commonwealth of The Bahamas"}
-append-entry	user	BS	2016-04-05T13:23:05Z	sha-256:a77f1e11270aab0c5bf315b2e7c268a7aff89713578020e1b4183c6df2b2c0e7
-append-entry	user	GB	2016-04-05T13:23:05Z	sha-256:0c87b0f2a098f0766aa8f5a06a069220207060ee197ea36925debcaadbe5b8aa
-append-entry	system	custodian	2017-11-02T11:18:00Z	sha-256:b065307fdd285aa0920bd08eee83824c0e923cfb5422e7dc4488455168e3bdc0
-assert-root-hash	sha-256:61fa13e7f2a0960382ecbbb4e7e72ebe808b05a2d1b6ee72c7434195a0b74bd4
