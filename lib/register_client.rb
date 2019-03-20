@@ -1,6 +1,5 @@
 require 'rest-client'
 require 'json'
-require 'exceptions/invalid_hash_value_error'
 
 module RegistersClient
   class RegisterClient
