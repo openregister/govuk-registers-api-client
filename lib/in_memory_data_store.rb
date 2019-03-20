@@ -86,14 +86,6 @@ module RegistersClient
       entry.nil? ? 0 : entry.entry_number
     end
 
-    def get_root_hash
-      @data[:root_hash]
-    end
-
-    def set_root_hash(root_hash)
-      @data[:root_hash] = root_hash
-    end
-
     def after_load
     end
 

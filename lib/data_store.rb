@@ -26,12 +26,6 @@ module DataStore
   def get_latest_entry_number(entry_type)
   end
 
-  def get_root_hash
-  end
-
-  def set_root_hash(root_hash)
-  end
-
   def after_load
   end
 end
